@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>圆圆的世界</title>
+<style>
+:root{
+  --bg:#f3faf8; --card:#ffffff; --ink:#24343a; --sub:#5d7178; --line:#d9ebe7;
+  --teal:#1fa38a; --teal-l:#d6f3ec; --sun:#ffb72b; --sun-l:#fff2d1; --coral:#ff6b6b; --coral-l:#ffe3e3;
+  --sky:#3a8ee6; --sky-l:#ddebfb; --grape:#8e6bd8; --grape-l:#ece5fb;
+  --ok:#22a06b; --bad:#e0524f; --radius:16px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",system-ui,sans-serif;font-size:16px;line-height:1.7;-webkit-text-size-adjust:100%}
+header{background:linear-gradient(120deg,#1fa38a,#36b9a0 55%,#7fd3c0);color:#fff;padding:14px 16px 10px;position:sticky;top:0;z-index:20;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.hd{max-width:980px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.hd h1{font-size:20px;margin:0;flex:1;letter-spacing:1px}
+.hd h1 small{font-weight:400;opacity:.9;font-size:13px;margin-left:6px}
+.starbox{background:rgba(255,255,255,.22);border-radius:99px;padding:3px 12px;font-weight:700;white-space:nowrap}
+nav{max-width:980px;margin:8px auto 0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+nav::-webkit-scrollbar{display:none}
+nav a{flex:none;color:#fff;text-decoration:none;padding:4px 12px;border-radius:99px;background:rgba(255,255,255,.15);font-size:14px;white-space:nowrap}
+nav a.on{background:#fff;color:var(--teal);font-weight:700}
+main{max-width:980px;margin:0 auto;padding:16px}
+section.page{display:none;animation:fade .35s}
+section.page.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h2{font-size:24px;margin:6px 0 4px}
+h3{font-size:18px;margin:0 0 8px;display:flex;align-items:center;gap:8px}
+.lead{color:var(--sub);margin:0 0 14px}
+.card{background:var(--card);border-radius:var(--radius);padding:16px;margin:0 0 16px;box-shadow:0 1px 3px rgba(30,60,60,.06),0 4px 16px rgba(30,60,60,.05);border:1px solid var(--line)}
+.tag{display:inline-block;font-size:12px;font-weight:700;border-radius:99px;padding:1px 9px;line-height:20px}
+.t-demo{background:var(--sky-l);color:var(--sky)}
+.t-know{background:var(--teal-l);color:var(--teal)}
+.t-story{background:var(--grape-l);color:var(--grape)}
+.t-warn{background:var(--coral-l);color:var(--coral)}
+.lv{font-size:12px;border-radius:6px;padding:0 7px;font-weight:700}
+.lv-基础{background:#dff5e8;color:#1d8a52}.lv-提高{background:var(--sun-l);color:#b07800}.lv-拔高{background:var(--coral-l);color:#c73f3c}
+svg{display:block;width:100%;height:auto;touch-action:manipulation}
+.demo{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:center}
+@media (max-width:720px){.demo{grid-template-columns:1fr}}
+.ctrl{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+input[type=range]{flex:1;min-width:120px;accent-color:var(--teal);height:28px}
+.btn{border:none;background:var(--teal);color:#fff;font:inherit;font-weight:700;border-radius:12px;padding:8px 16px;cursor:pointer;transition:transform .1s,filter .15s;font-size:15px}
+.btn:hover{filter:brightness(1.07)}.btn:active{transform:scale(.96)}
+.btn.ghost{background:var(--teal-l);color:var(--teal)}
+.btn.sun{background:var(--sun);color:#5a3d00}
+.btn.sm{padding:5px 12px;font-size:14px;border-radius:10px}
+.btn[disabled]{opacity:.45;cursor:default}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:4px 12px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink)}
+.seg button.on{border-color:var(--teal);background:var(--teal-l);color:var(--teal);font-weight:700}
+.read{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.read div{background:var(--bg);border-radius:12px;padding:8px 10px}
+.read b{display:block;font-size:20px;color:var(--teal)}
+.read span{font-size:13px;color:var(--sub)}
+.read .c2{grid-column:span 2}
+.formula{font-family:"Cambria Math","Times New Roman",serif;font-size:19px;background:var(--sun-l);border-radius:10px;padding:4px 12px;display:inline-block;font-weight:700;color:#7a5200}
+.note{background:var(--bg);border-left:4px solid var(--teal);border-radius:8px;padding:8px 12px;margin:8px 0;font-size:15px}
+.warn{background:var(--coral-l);border-left:4px solid var(--coral);border-radius:8px;padding:8px 12px;margin:8px 0;font-size:15px}
+ul.k{margin:6px 0;padding-left:20px}ul.k li{margin:3px 0}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:5px 6px;text-align:center}
+table.t th{color:var(--sub);font-weight:600}
+.home-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.chap{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px;transition:transform .15s,box-shadow .15s}
+.chap:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(30,60,60,.1)}
+.chap .n{font-size:30px}
+.chap h4{margin:4px 0 2px;font-size:17px}
+.chap p{margin:0;color:var(--sub);font-size:14px}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin-top:8px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),#7fd3c0);border-radius:9px;transition:width .5s}
+/* questions */
+.q{border:2px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 12px;background:#fff;transition:border-color .2s}
+.q.right{border-color:#9ddbb9;background:#f6fdf9}
+.q.wrong{border-color:#f3b3b1;background:#fffafa}
+.qh{display:flex;gap:8px;align-items:center;margin-bottom:4px;font-size:13px;color:var(--sub)}
+.qt{font-size:16px;margin:2px 0 8px}
+.qfig{max-width:300px;margin:4px 0 8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.opts label{border:2px solid var(--line);border-radius:10px;padding:5px 12px;cursor:pointer;display:flex;align-items:center;gap:6px;background:#fff}
+.opts label:has(input:checked){border-color:var(--teal);background:var(--teal-l)}
+.opts input{accent-color:var(--teal)}
+.fill{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.fill input{font:inherit;font-size:17px;width:130px;padding:6px 10px;border:2px solid var(--line);border-radius:10px;outline:none}
+.fill input:focus{border-color:var(--teal)}
+.fb{display:none;margin-top:8px;border-radius:10px;padding:10px 12px;font-size:15px}
+.fb.show{display:block;animation:fade .3s}
+.fb.ok{background:#e7f8ef}.fb.no{background:#fdeceb}
+.fb .head{font-weight:700;margin-bottom:4px}
+.fb.ok .head{color:var(--ok)}.fb.no .head{color:var(--bad)}
+.fb .efig{max-width:280px;margin-top:6px}
+.score{text-align:center;padding:10px}
+.score .big{font-size:56px;font-weight:800;color:var(--teal);line-height:1.1}
+.pill{display:inline-block;background:var(--bg);border-radius:99px;padding:2px 10px;margin:2px;font-size:13px}
+/* stars */
+.star-fx{position:fixed;pointer-events:none;z-index:99;font-size:22px;animation:fly 1s ease-out forwards}
+@keyframes fly{0%{opacity:1;transform:translate(0,0) scale(.6) rotate(0)}100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(200deg)}}
+.cheer{position:fixed;left:50%;top:22%;transform:translate(-50%,0);background:#fff;border-radius:99px;padding:8px 22px;font-weight:800;color:var(--teal);box-shadow:0 8px 30px rgba(0,0,0,.15);z-index:98;animation:pop 1.4s forwards;pointer-events:none;font-size:18px;white-space:nowrap}
+@keyframes pop{0%{opacity:0;transform:translate(-50%,10px) scale(.7)}15%{opacity:1;transform:translate(-50%,0) scale(1.08)}25%{transform:translate(-50%,0) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-12px)}}
+.steps-txt{min-height:72px;background:var(--bg);border-radius:12px;padding:10px 12px;font-size:15px}
+footer{text-align:center;color:var(--sub);font-size:13px;padding:10px 0 30px}
+.kbd{font-family:"Cambria Math","Times New Roman",serif;font-style:italic}
+</style>
+</head>
+<body>
+<header>
+  <div class="hd"><h1>⭕ 圆圆的世界<small>六年级 · 圆</small></h1><div class="starbox">⭐ <span id="starN">0</span></div></div>
+  <nav id="nav"></nav>
+</header>
+<main id="main">
+
+<!-- ================= HOME ================= -->
+<section class="page" id="p-home">
+  <h2>嗨！欢迎来到圆圆的世界 👋</h2>
+  <p class="lead">车轮、披萨、硬币、摩天轮……圆藏在生活的每个角落。我们一关一关往前走：先看动画，再动手拖一拖，最后做几道小题。每答对一题，就能收集一颗 ⭐！</p>
+  <div class="home-grid" id="homeGrid"></div>
+  <div class="card" style="margin-top:16px">
+    <h3><span class="tag t-know">小约定</span></h3>
+    <ul class="k">
+      <li>本站里 <b>π 都取 3.14</b>，只有拔高题有时要"保留 π"。</li>
+      <li>填空题只填<b>数字</b>就好（单位已经写好啦）。</li>
+      <li>做错的题会自动收进 <a href="#wrong">📒 错题本</a>，随时可以再练，答对就会"消灭"它。</li>
+      <li>你的星星和记录保存在这台设备的浏览器里。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 1 认识圆 ================= -->
+<section class="page" id="p-c1">
+  <h2>① 认识圆</h2>
+  <p class="lead">圆是一种很"公平"的图形：从中心到边上任何一点，距离都一模一样。</p>
+  <div class="card">
+    <h3><span class="tag t-demo">动画</span>拖动滑块，看看圆怎么变</h3>
+    <div class="demo">
+      <svg id="d1" viewBox="0 0 400 300"></svg>
+      <div class="ctrl">
+        <div class="row">半径 r：<input type="range" id="d1r" min="1" max="6" step="0.5" value="3"><b id="d1rv">3 cm</b></div>
+        <div class="read">
+          <div><span>半径 r</span><b id="d1a">3 cm</b></div>
+          <div><span>直径 d = 2r</span><b id="d1b">6 cm</b></div>
+          <div><span>周长 C = 2×3.14×r</span><b id="d1c">18.84 cm</b></div>
+          <div><span>面积 S = 3.14×r×r</span><b id="d1d">28.26 cm²</b></div>
+        </div>
+        <div class="row">
+          <button class="btn sm" id="d1draw">✏️ 用圆规画</button>
+          <button class="btn sm ghost" id="d1rad">📏 画好多半径</button>
+          <button class="btn sm ghost" id="d1sym">🪞 找对称轴</button>
+        </div>
+        <div class="note" id="d1tip">试试把半径拖大：直径、周长、面积都变大了，谁变得最快？</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-know">知识卡</span></h3>
+    <ul class="k">
+      <li><b>圆心 O</b>：圆的正中心，决定圆<b>在哪儿</b>。</li>
+      <li><b>半径 r</b>：圆心到圆上任意一点的线段，决定圆<b>有多大</b>。</li>
+      <li><b>直径 d</b>：穿过圆心、两头都在圆上的线段。</li>
+      <li>同一个圆里：半径有<b>无数条</b>、都一样长；直径也是。<span class="formula">d = 2r　r = d ÷ 2</span></li>
+      <li>用圆规画圆：两脚分开的距离就是<b>半径</b>，针尖扎的地方就是<b>圆心</b>。</li>
+      <li>圆是<b>轴对称图形</b>，有<b>无数条</b>对称轴（每条直径所在的<b>直线</b>）。</li>
+    </ul>
+    <div class="warn">⚠️ 陷阱："直径是半径的 2 倍" 这句话不完整！必须说"<b>在同一个圆（或一样大的圆）里</b>"。大圆的半径可能比小圆的直径还长呢。</div>
+  </div>
+  <div class="card"><h3><span class="tag t-know">小练习</span>来试试吧</h3><div class="qs" data-ch="c1"></div></div>
+</section>
+
+<!-- ================= 2 认识π ================= -->
+<section class="page" id="p-c2">
+  <h2>② 认识 π</h2>
+  <p class="lead">我们来当一回科学家：量一量不同大小的圆，看看"周长 ÷ 直径"会得到什么。</p>
+  <div class="card">
+    <h3><span class="tag t-demo">实验</span>量一量：周长 ÷ 直径 = ?</h3>
+    <div class="seg" id="d2pick" style="margin-bottom:8px"></div>
+    <svg id="d2" viewBox="0 0 640 230"></svg>
+    <div class="row" style="margin:8px 0"><button class="btn" id="d2go">📏 用绳子量一量</button><button class="btn sm ghost" id="d2clr">清空表格</button></div>
+    <table class="t" id="d2tab"><thead><tr><th>物体</th><th>直径 d</th><th>量出的周长 C</th><th>C ÷ d</th></tr></thead><tbody></tbody></table>
+    <div class="note" id="d2tip">多量几个圆，看看最后一列有什么秘密？</div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-demo">动画</span>刘徽的"割圆术"：用多边形逼近圆</h3>
+    <div class="demo">
+      <svg id="d2b" viewBox="0 0 300 300"></svg>
+      <div class="ctrl">
+        <div class="row">边数：<input type="range" id="d2n" min="0" max="7" step="1" value="0"><b id="d2nv">6</b></div>
+        <div class="read">
+          <div class="c2"><span>正多边形周长 ÷ 直径</span><b id="d2val">3</b></div>
+        </div>
+        <div class="note">边越多，多边形越像圆，这个数就越接近 <b>π = 3.14159…</b>。刘徽说："<b>割之弥细，所失弥少</b>"——切得越细，误差越小！</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-story">小故事</span>π 的历史</h3>
+    <ul class="k">
+      <li>🏛️ <b>阿基米德</b>（古希腊，两千多年前）：在圆里、圆外各画一个<b>正 96 边形</b>，算出 π 在 3.1408 和 3.1429 之间。</li>
+      <li>📜 <b>刘徽</b>（三国时期）：发明"割圆术"，算到 3.14，后来又算到 3.1416。</li>
+      <li>⭐ <b>祖冲之</b>（南北朝）：算出 π 在 <b>3.1415926 和 3.1415927</b> 之间，领先世界将近一千年！他还给出两个分数：约率 <b>22/7</b>、密率 <b>355/113</b>。</li>
+      <li>🖥️ 今天电脑已经算出 π 的上百万亿位，但它<b>永远算不完、也不会循环</b>，叫"无限不循环小数"。</li>
+    </ul>
+    <div class="note">π 读作 "pài"。<b>π = 周长 ÷ 直径</b>，无论圆多大多小都一样。我们平时取 <b>3.14</b>。</div>
+    <div class="warn">⚠️ 陷阱："圆周率就是 3.14" ✗ —— 3.14 只是近似值！</div>
+  </div>
+  <div class="card"><h3><span class="tag t-know">小练习</span></h3><div class="qs" data-ch="c2"></div></div>
+</section>
+
+<!-- ================= 3 周长 ================= -->
+<section class="page" id="p-c3">
+  <h2>③ 圆的周长</h2>
+  <p class="lead">圆的边是弯的，没法直接用尺子量。那怎么办？让它滚起来！</p>
+  <div class="card">
+    <h3><span class="tag t-demo">动画</span>滚动法：圆在直线上滚一圈</h3>
+    <svg id="d3" viewBox="0 0 700 270"></svg>
+    <div class="row" style="margin-top:8px"><button class="btn" id="d3go">▶️ 滚一圈</button><span id="d3tip" style="color:var(--sub)">红点从地面出发，转一圈又回到地面。</span></div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-know">知识卡</span>周长公式</h3>
+    <p>滚一圈的长度（红线）正好等于 <b>3 条直径还多一点点</b>，这个"3 倍多一点"就是 π。还可以用<b>绕绳法</b>：用绳子绕圆一圈，拉直量长度，结果一样。</p>
+    <p><span class="formula">C = π d</span>　或　<span class="formula">C = 2 π r</span></p>
+    <ul class="k">
+      <li>知道周长求直径：<b>d = C ÷ 3.14</b>；求半径：<b>r = C ÷ 3.14 ÷ 2</b>。</li>
+      <li>🚲 车轮转 1 圈，车就前进 1 个周长。</li>
+      <li>💡 背一背：3.14×2=6.28　×3=9.42　×4=12.56　×5=15.7　×6=18.84　×7=21.98　×8=25.12　×9=28.26</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-warn">易错</span>半圆的周长</h3>
+    <div class="demo">
+      <svg id="d3h" viewBox="0 0 300 190"></svg>
+      <div class="ctrl">
+        <div class="steps-txt" id="d3htxt">半圆的周长 = ？ 点按钮看看由哪几部分组成。</div>
+        <div class="row"><button class="btn sm" id="d3hgo">✨ 拆开看看</button></div>
+        <div class="warn">半圆周长 = 圆周长的一半 + <b>直径</b><br><span class="formula">C = 3.14 × r + 2r</span>　千万别漏掉直径！</div>
+      </div>
+    </div>
+  </div>
+  <div class="card"><h3><span class="tag t-know">小练习</span></h3><div class="qs" data-ch="c3"></div></div>
+</section>
+
+<!-- ================= 4 面积 ================= -->
+<section class="page" id="p-c4">
+  <h2>④ 圆的面积</h2>
+  <p class="lead">圆不是方的，面积怎么算？聪明的办法：把它切开，拼成我们会算的图形！</p>
+  <div class="card">
+    <h3><span class="tag t-demo">动画</span>切披萨：把圆拼成"长方形"</h3>
+    <div class="row" style="margin-bottom:6px">切成：<div class="seg" id="d4n"></div></div>
+    <svg id="d4" viewBox="0 0 640 300"></svg>
+    <div class="row" style="margin-top:8px"><button class="btn" id="d4go">🧩 拼一拼</button><button class="btn sm ghost" id="d4back">↩️ 还原</button></div>
+    <div class="steps-txt" id="d4txt" style="margin-top:8px">先选切几份，再点"拼一拼"。切得越多，拼出来的图形越像什么？</div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-know">知识卡</span>面积公式</h3>
+    <p>拼成的长方形：<b>长</b> = 圆周长的一半 = <b>πr</b>，<b>宽</b> = 半径 <b>r</b>。</p>
+    <p>长方形面积 = 长 × 宽 = πr × r，所以 <span class="formula">S = π r²</span></p>
+    <ul class="k">
+      <li>r² 读作"r 的平方"，意思是 <b>r × r</b>，可不是 r × 2 哦！</li>
+      <li>知道直径或周长求面积：<b>先求出半径</b>，再代入公式。</li>
+      <li>拼的过程中面积不变，但<b>周长变了</b>：长方形周长 = 圆周长 + 2r。</li>
+      <li>💡 背一背：3.14×16=50.24　×25=78.5　×36=113.04　×49=153.86　×64=200.96　×81=254.34</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-demo">动画</span>半径变大几倍，面积变大几倍？</h3>
+    <div class="demo">
+      <svg id="d4k" viewBox="0 0 320 240"></svg>
+      <div class="ctrl">
+        <div class="row">半径扩大到原来的：<input type="range" id="d4kr" min="1" max="4" step="1" value="2"><b id="d4kv">2 倍</b></div>
+        <div class="read">
+          <div><span>直径、周长</span><b id="d4k1">× 2</b></div>
+          <div><span>面积</span><b id="d4k2">× 4</b></div>
+        </div>
+        <div class="note">半径扩大 n 倍：周长扩大 <b>n</b> 倍，面积扩大 <b>n × n</b> 倍！右边小方格可以帮你数一数。</div>
+      </div>
+    </div>
+  </div>
+  <div class="card"><h3><span class="tag t-know">小练习</span></h3><div class="qs" data-ch="c4"></div></div>
+</section>
+
+<!-- ================= 5 圆环与扇形 ================= -->
+<section class="page" id="p-c5">
+  <h2>⑤ 圆环与扇形</h2>
+  <p class="lead">甜甜圈的样子叫圆环，一块披萨的样子叫扇形。它们都是从圆变出来的！</p>
+  <div class="card">
+    <h3><span class="tag t-demo">动画</span>圆环 = 大圆 − 小圆</h3>
+    <div class="demo">
+      <svg id="d5r" viewBox="0 0 300 300"></svg>
+      <div class="ctrl">
+        <div class="row">外圆半径 R：<input type="range" id="d5R" min="2" max="6" step="0.5" value="5"><b id="d5Rv">5</b></div>
+        <div class="row">内圆半径 r：<input type="range" id="d5rr" min="1" max="5.5" step="0.5" value="3"><b id="d5rv">3</b></div>
+        <div class="read"><div class="c2"><span>圆环面积 = 3.14 × (R² − r²)</span><b id="d5ra">50.24 cm²</b></div></div>
+        <div class="note"><span class="formula">S = π(R² − r²)</span><br>先把两个半径各自平方，再相减。<br>⚠️ 不能写成 π(R − r)²！</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-demo">动画</span>扇形：圆心角决定它占几分之几</h3>
+    <div class="demo">
+      <svg id="d5s" viewBox="0 0 300 300"></svg>
+      <div class="ctrl">
+        <div class="row">圆心角：<input type="range" id="d5a" min="5" max="360" step="5" value="90"><b id="d5av">90°</b></div>
+        <div class="seg" id="d5pre"></div>
+        <div class="read">
+          <div class="c2"><span>占整个圆的</span><b id="d5f">90/360 = 1/4</b></div>
+          <div><span>扇形面积（r = 4 cm）</span><b id="d5sa">12.56 cm²</b></div>
+          <div><span>弧长</span><b id="d5sl">6.28 cm</b></div>
+          <div class="c2"><span>扇形周长 = 弧长 + 2 条半径</span><b id="d5sp">14.28 cm</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="note">扇形由<b>两条半径</b>和<b>一段弧</b>围成。顶点在圆心的角叫<b>圆心角</b>。<br>扇形面积 = 圆面积 × <span class="kbd">n</span>/360　　弧长 = 圆周长 × <span class="kbd">n</span>/360</div>
+  </div>
+  <div class="card"><h3><span class="tag t-know">小练习</span></h3><div class="qs" data-ch="c5"></div></div>
+</section>
+
+<!-- ================= 6 圆与正方形 ================= -->
+<section class="page" id="p-c6">
+  <h2>⑥ 圆与正方形</h2>
+  <p class="lead">圆和正方形是一对好朋友，它们套在一起时藏着固定的比例。</p>
+  <div class="card">
+    <h3><span class="tag t-demo">动画</span>外方内圆 &amp; 外圆内方</h3>
+    <div class="seg" id="d6m" style="margin-bottom:8px"></div>
+    <div class="demo">
+      <svg id="d6" viewBox="0 0 300 300"></svg>
+      <div class="ctrl">
+        <div class="row">圆的半径 r：<input type="range" id="d6r" min="1" max="10" step="1" value="5"><b id="d6rv">5</b></div>
+        <div class="read">
+          <div><span>正方形面积</span><b id="d6sq"></b></div>
+          <div><span>圆面积</span><b id="d6ci"></b></div>
+          <div><span>空白部分</span><b id="d6gap"></b></div>
+          <div><span>比例</span><b id="d6ratio"></b></div>
+        </div>
+        <div class="note" id="d6tip"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-demo">比一比</span>谁是"面积冠军"？</h3>
+    <div class="seg" id="d6cm" style="margin-bottom:8px"></div>
+    <div class="row" id="d6Lrow"><span id="d6Llab">周长都是：</span><input type="range" id="d6L" min="12" max="60" step="4" value="24"><b id="d6Lv">24 cm</b></div>
+    <svg id="d6c" viewBox="0 0 600 200"></svg>
+    <div class="note" id="d6ctip"></div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-know">知识卡</span>要记住的几个"神奇数字"</h3>
+    <table class="t">
+      <tr><th></th><th>正方形</th><th>圆</th><th>空白</th></tr>
+      <tr><td>外方内圆</td><td>4r²</td><td>3.14r²</td><td><b>0.86r²</b></td></tr>
+      <tr><td>外圆内方</td><td>2r²</td><td>3.14r²</td><td><b>1.14r²</b></td></tr>
+    </table>
+    <ul class="k">
+      <li>正方形里最大的圆，占正方形的 <b>π/4 ≈ 78.5%</b>。</li>
+      <li>只知道正方形面积、不知道半径？<b>不用求 r</b>！外方内圆时正方形面积 = 4r²，先求出 r²，直接乘 3.14。</li>
+      <li>周长相同：<b>圆的面积最大</b>；面积相同：<b>圆的周长最短</b>。所以很多水管、井口、树干都是圆的。</li>
+    </ul>
+  </div>
+  <div class="card"><h3><span class="tag t-know">小练习</span></h3><div class="qs" data-ch="c6"></div></div>
+</section>
+
+<!-- ================= 7 拔高挑战 ================= -->
+<section class="page" id="p-c7">
+  <h2>⑦ 拔高挑战 🚀</h2>
+  <p class="lead">这一关的题看着复杂，其实都有"小魔法"：<b>割补、平移、重叠</b>。跟着动画一步一步来！</p>
+  <div class="card">
+    <h3><span class="tag t-demo">魔法①</span>平移法：弯弯的阴影拼成正方形</h3>
+    <div class="demo">
+      <svg id="d7a" viewBox="0 0 320 220"></svg>
+      <div class="ctrl"><div class="steps-txt" id="d7atxt"></div><div class="row"><button class="btn sm" id="d7ago">下一步 ▶</button><button class="btn sm ghost" id="d7are">重来</button></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-demo">魔法②</span>重叠法：树叶形的面积</h3>
+    <div class="demo">
+      <svg id="d7b" viewBox="0 0 300 300"></svg>
+      <div class="ctrl"><div class="steps-txt" id="d7btxt"></div><div class="row"><button class="btn sm" id="d7bgo">下一步 ▶</button><button class="btn sm ghost" id="d7bre">重来</button></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-demo">魔法③</span>割补法：弯月形（月牙）</h3>
+    <div class="demo">
+      <svg id="d7c" viewBox="0 0 400 250"></svg>
+      <div class="ctrl"><div class="steps-txt" id="d7ctxt"></div><div class="row"><button class="btn sm" id="d7cgo">下一步 ▶</button><button class="btn sm ghost" id="d7cre">重来</button></div></div>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-demo">动画</span>滚动问题：硬币绕硬币转几圈？</h3>
+    <div class="seg" id="d7dk" style="margin-bottom:8px"></div>
+    <div class="demo">
+      <svg id="d7d" viewBox="0 0 320 320"></svg>
+      <div class="ctrl">
+        <div class="read"><div class="c2"><span>滚动的硬币自己转了</span><b id="d7dturn">0 圈</b></div></div>
+        <div class="row"><button class="btn sm" id="d7dgo">▶️ 绕一周</button></div>
+        <div class="note" id="d7dtip">猜一猜：一枚硬币贴着同样大的硬币外边滚一周，自己转了几圈？很多人以为是 1 圈……</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h3><span class="tag t-know">知识卡</span>拔高题锦囊</h3>
+    <ul class="k">
+      <li>🏃 <b>跑道</b>：一圈 = 两条直道 + 两个半圆（合起来一个整圆）。相邻跑道，跑一整圈起跑线要前移 <b>2 × 3.14 × 道宽</b>。</li>
+      <li>🪙 <b>滚动</b>：数圈数要看<b>圆心</b>走了多远：圆心路程 ÷ 自己的周长 = 自转圈数。绕外侧滚：(R + r) ÷ r 圈。</li>
+      <li>🕐 <b>钟表</b>：指针长就是半径。分针 15 分钟扫过 1/4 圆，时针 12 小时走 1 圈。</li>
+      <li>🐑 <b>羊吃草</b>：绳长是半径；绕过墙角时，剩下的绳子变成新的小半径。</li>
+      <li>🔢 <b>只知道 r²</b>：别急着求 r，直接用 r² 乘 3.14。</li>
+      <li>📐 <b>组合图形周长</b>：只沿着最外边描一圈，看清楚哪些是弧、哪些是直线。</li>
+    </ul>
+  </div>
+  <div class="card"><h3><span class="tag t-know">挑战题</span></h3><div class="qs" data-ch="c7"></div></div>
+</section>
+
+<!-- ================= QUIZ ================= -->
+<section class="page" id="p-quiz">
+  <h2>🏆 综合测验</h2>
+  <p class="lead">20 道题，每题 5 分，基础、提高、拔高都有。做完所有题再点最下面的"交卷"。加油！</p>
+  <div class="card" id="quizHist"></div>
+  <div id="quizBox"></div>
+  <div class="card" id="quizRes" style="display:none"></div>
+  <div class="row" style="justify-content:center;margin-bottom:20px"><button class="btn sun" id="quizSubmit" style="font-size:18px;padding:10px 32px">📝 交卷</button><button class="btn ghost" id="quizAgain" style="display:none">🔄 再做一遍</button></div>
+</section>
+
+<!-- ================= WRONG ================= -->
+<section class="page" id="p-wrong">
+  <h2>📒 错题本</h2>
+  <p class="lead">错题是最好的老师！再做一遍，答对了它就会从错题本里消失。</p>
+  <div id="wrongBox"></div>
+  <div class="row" style="justify-content:center"><button class="btn sm ghost" id="wrongReset">🗑️ 清空所有记录（星星也会清零）</button></div>
+</section>
+
+</main>
+<footer>π 取 3.14 · 不联网也能用 · 做给六年级的你 💚</footer>
+
+<script>
+"use strict";
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){ const e=document.createElementNS(NS,tag); for(const k in attrs) e.setAttribute(k,attrs[k]); if(parent) parent.appendChild(e); return e; }
+function txt(parent,x,y,s,attrs){ const t=el("text",Object.assign({x,y,"font-size":14,"text-anchor":"middle",fill:"#24343a","font-family":"inherit"},attrs||{}),parent); t.textContent=s; return t; }
+function clear(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
+const P = 3.14;
+function fmt(n){ return String(Math.round(n*10000)/10000); }
+function gcd(a,b){ return b?gcd(b,a%b):a; }
+function anim(dur, fn, done){ const t0=performance.now(); let stop=false; function f(now){ if(stop) return; let t=Math.min(1,(now-t0)/dur); fn(t); if(t<1) requestAnimationFrame(f); else if(done) done(); } requestAnimationFrame(f); return ()=>{stop=true;}; }
+const ease = t => t<.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
+const C = {teal:"#1fa38a", tealL:"#bfeee2", sun:"#ffb72b", sunL:"#ffe39a", coral:"#ff6b6b", sky:"#3a8ee6", grape:"#8e6bd8", ink:"#24343a", sub:"#8aa0a6", line:"#cfe3de"};
+
+/* ---------- storage ---------- */
+const KEY="circle-app-v1";
+let S = {stars:0, done:{}, wrong:[], quiz:[]};
+try{ const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw)); }catch(e){}
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} $("#starN").textContent=S.stars; }
+
+/* ---------- celebration ---------- */
+const CHEERS=["太棒了！🎉","答对啦！⭐","你真聪明！","完全正确！👍","厉害厉害！","继续保持！💪","满分思路！"];
+function celebrate(target){
+  const r = target ? target.getBoundingClientRect() : {left:innerWidth/2,top:innerHeight/2,width:0,height:0};
+  const cx=r.left+r.width/2, cy=r.top+r.height/2;
+  for(let i=0;i<10;i++){
+    const s=document.createElement("span"); s.className="star-fx"; s.textContent=["⭐","✨","🌟"][i%3];
+    const a=Math.random()*Math.PI*2, d=60+Math.random()*80;
+    s.style.left=cx+"px"; s.style.top=cy+"px"; s.style.setProperty("--dx",Math.cos(a)*d+"px"); s.style.setProperty("--dy",Math.sin(a)*d-30+"px");
+    document.body.appendChild(s); setTimeout(()=>s.remove(),1000);
+  }
+  const c=document.createElement("div"); c.className="cheer"; c.textContent=CHEERS[Math.floor(Math.random()*CHEERS.length)];
+  document.body.appendChild(c); setTimeout(()=>c.remove(),1400);
+}
+
+/* ---------- figures for questions ---------- */
+const FIG = {
+  half:`<svg viewBox="0 0 220 130"><path d="M30,110 A80,80 0 0 1 190,110 Z" fill="#d6f3ec" stroke="#1fa38a" stroke-width="3"/><text x="110" y="126" text-anchor="middle" font-size="14">d = 10 cm</text></svg>`,
+  halfAns:`<svg viewBox="0 0 220 130"><path d="M30,110 A80,80 0 0 1 190,110" fill="#d6f3ec" stroke="#ff6b6b" stroke-width="5"/><line x1="30" y1="110" x2="190" y2="110" stroke="#3a8ee6" stroke-width="5"/><text x="110" y="22" text-anchor="middle" font-size="13" fill="#ff6b6b">弧 = 3.14×10÷2 = 15.7</text><text x="110" y="128" text-anchor="middle" font-size="13" fill="#3a8ee6">直径 = 10（别忘了我！）</text></svg>`,
+  leaf:`<svg viewBox="0 0 200 200"><rect x="20" y="20" width="160" height="160" fill="#fff" stroke="#24343a" stroke-width="2"/><path d="M20,20 A160,160 0 0 1 180,180 A160,160 0 0 1 20,20Z" fill="#ffe39a" stroke="#e0a000" stroke-width="2"/><text x="100" y="196" text-anchor="middle" font-size="13">边长 10 cm</text></svg>`,
+  leafAns:`<svg viewBox="0 0 200 200"><rect x="20" y="20" width="160" height="160" fill="#fff" stroke="#24343a" stroke-width="2"/><path d="M20,180 L20,20 A160,160 0 0 1 180,180Z" fill="#bfeee2" stroke="#1fa38a" stroke-width="2" opacity=".85"/><path d="M20,20 L180,180 L20,180Z" fill="#fff" stroke="#8aa0a6" stroke-dasharray="5 4"/><path d="M20,20 A160,160 0 0 1 180,180 Z" fill="#ffe39a" stroke="#e0a000" stroke-width="2"/><text x="125" y="80" text-anchor="middle" font-size="12">半片叶</text><text x="70" y="150" text-anchor="middle" font-size="12">三角形</text></svg>`,
+  shift:`<svg viewBox="0 0 260 150"><rect x="10" y="10" width="120" height="120" fill="#fff" stroke="#24343a" stroke-width="2"/><rect x="130" y="10" width="120" height="120" fill="#fff" stroke="#24343a" stroke-width="2"/><path d="M10,10 L130,10 L130,130 A120,120 0 0 0 10,10Z" fill="#ffb72b" opacity=".85"/><path d="M130,130 L130,10 A120,120 0 0 1 250,130Z" fill="#ffb72b" opacity=".85"/><path d="M10,10 A120,120 0 0 1 130,130 M130,10 A120,120 0 0 1 250,130" fill="none" stroke="#24343a" stroke-width="2"/><text x="130" y="146" text-anchor="middle" font-size="13">两个边长 4 cm 的正方形</text></svg>`,
+  sheep:`<svg viewBox="0 0 280 260"><rect x="130" y="60" width="90" height="90" fill="#e8dcc7" stroke="#8a6d3b" stroke-width="3"/><text x="175" y="110" text-anchor="middle" font-size="13">羊圈 3 m</text><circle cx="130" cy="150" r="5" fill="#24343a"/><text x="112" y="172" font-size="20">🐑</text><line x1="130" y1="150" x2="45" y2="235" stroke="#8a6d3b" stroke-dasharray="4 3" stroke-width="2"/><text x="70" y="200" font-size="13">绳 4 m</text></svg>`,
+  sheepAns:`<svg viewBox="0 0 280 260"><path d="M130,150 L130,30 A120,120 0 1 0 250,150Z" fill="#bfeee2" stroke="#1fa38a" stroke-width="2"/><path d="M220,150 L250,150 A30,30 0 0 0 220,120Z" fill="#ffe39a" stroke="#e0a000" stroke-width="2"/><path d="M130,60 L130,30 A30,30 0 0 1 160,60Z" fill="#ffe39a" stroke="#e0a000" stroke-width="2"/><rect x="130" y="60" width="90" height="90" fill="#e8dcc7" stroke="#8a6d3b" stroke-width="3"/><circle cx="130" cy="150" r="5" fill="#24343a"/><text x="70" y="160" font-size="12" text-anchor="middle">3/4 个大圆</text><text x="255" y="125" font-size="11">1/4小圆</text><text x="160" y="25" font-size="11">1/4小圆</text></svg>`,
+  track:`<svg viewBox="0 0 400 210"><path d="M100,40 L300,40 A60,60 0 0 1 300,160 L100,160 A60,60 0 0 1 100,40Z" fill="#ffd9c7" stroke="#e86d3e" stroke-width="4"/><path d="M100,40 L300,40 M100,160 L300,160" stroke="#24343a" stroke-width="2"/><line x1="300" y1="40" x2="300" y2="160" stroke="#3a8ee6" stroke-dasharray="5 4" stroke-width="2"/><text x="200" y="30" text-anchor="middle" font-size="14">直道 100 m</text><text x="312" y="105" font-size="13" fill="#3a8ee6">直径 60 m</text><text x="200" y="104" text-anchor="middle" font-size="15">🏃</text></svg>`,
+  lune:`<svg viewBox="0 0 400 240"><path d="M50,220 A150,150 0 0 1 350,220 Z" fill="#fff" stroke="#24343a" stroke-width="2"/><path d="M50,220 A106.07,106.07 0 0 1 200,70 A150,150 0 0 0 50,220Z" fill="#ffb72b"/><path d="M200,70 A106.07,106.07 0 0 1 350,220 A150,150 0 0 0 200,70Z" fill="#ffb72b"/><path d="M50,220 L200,70 L350,220" fill="none" stroke="#24343a" stroke-width="2"/><circle cx="200" cy="220" r="3"/><text x="200" y="236" text-anchor="middle" font-size="13">O，大半圆半径 6 cm</text></svg>`,
+  clock:`<svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="#fff" stroke="#24343a" stroke-width="3"/><path d="M100,100 L100,20 A80,80 0 0 1 180,100Z" fill="#bfeee2"/><line x1="100" y1="100" x2="100" y2="24" stroke="#24343a" stroke-width="3"/><line x1="100" y1="100" x2="176" y2="100" stroke="#ff6b6b" stroke-width="3"/><text x="100" y="40" text-anchor="middle" font-size="14">12</text><text x="166" y="105" text-anchor="middle" font-size="14">3</text><circle cx="100" cy="100" r="4"/></svg>`,
+  coin:`<svg viewBox="0 0 200 110"><circle cx="65" cy="55" r="40" fill="#ffe39a" stroke="#e0a000" stroke-width="3"/><circle cx="145" cy="55" r="40" fill="#bfeee2" stroke="#1fa38a" stroke-width="3"/><text x="65" y="60" text-anchor="middle" font-size="13">不动</text><text x="145" y="60" text-anchor="middle" font-size="13">滚动</text></svg>`
+};
+
+/* ---------- question bank ---------- */
+// type: choice / judge / fill ; ans: index (choice), true/false (judge), number (fill)
+const Q = [
+ // c1
+ {id:"c1-1",ch:"c1",lv:"基础",type:"judge",q:"判断：直径是半径的 2 倍。",ans:false,exp:"要加上前提：<b>在同一个圆或一样大的圆里</b>，直径才是半径的 2 倍。比如大圆的半径 10 cm，小圆的直径 4 cm，就不是 2 倍关系。"},
+ {id:"c1-2",ch:"c1",lv:"基础",type:"fill",q:"圆规两脚之间的距离是 3 cm，画出的圆直径是 ___ cm。",ans:6,exp:"两脚间的距离就是<b>半径</b> 3 cm，直径 = 2 × 3 = <b>6 cm</b>。"},
+ {id:"c1-3",ch:"c1",lv:"基础",type:"choice",q:"圆有几条对称轴？",opts:["1 条","2 条","4 条","无数条"],ans:3,exp:"每一条直径所在的直线都是对称轴，直径有无数条，所以对称轴有<b>无数条</b>。"},
+ {id:"c1-4",ch:"c1",lv:"提高",type:"fill",q:"在一个长 10 cm、宽 6 cm 的长方形纸里剪一个最大的圆，这个圆的半径是 ___ cm。",ans:3,exp:"最大的圆要能放进去，直径不能超过<b>短的那条边</b>（宽 6 cm），所以直径 6 cm，半径 <b>3 cm</b>。"},
+ {id:"c1-5",ch:"c1",lv:"基础",type:"choice",q:"把一张圆形纸对折、再对折，两条折痕的交点是圆的什么？",opts:["半径","圆心","直径","圆周"],ans:1,exp:"每条折痕都是一条直径，所有直径都经过<b>圆心</b>，所以交点就是圆心。"},
+ // c2
+ {id:"c2-1",ch:"c2",lv:"基础",type:"judge",q:"判断：圆周率就是 3.14。",ans:false,exp:"π 是无限不循环小数 3.1415926…，<b>3.14 只是它的近似值</b>。"},
+ {id:"c2-2",ch:"c2",lv:"基础",type:"choice",q:"大圆的“周长 ÷ 直径”与小圆的“周长 ÷ 直径”相比：",opts:["大圆的大","小圆的大","一样大","无法比较"],ans:2,exp:"不管圆多大，周长 ÷ 直径都等于 <b>π</b>，所以一样大。"},
+ {id:"c2-3",ch:"c2",lv:"基础",type:"choice",q:"第一个把圆周率精确到小数点后第 7 位的数学家是：",opts:["阿基米德","刘徽","祖冲之","华罗庚"],ans:2,exp:"<b>祖冲之</b>算出 π 在 3.1415926 和 3.1415927 之间，领先世界近一千年。"},
+ {id:"c2-4",ch:"c2",lv:"基础",type:"judge",q:"判断：π 是一个无限不循环小数。",ans:true,exp:"对！π 的小数位永远写不完，也不会出现循环。"},
+ {id:"c2-5",ch:"c2",lv:"提高",type:"choice",q:"圆的周长是它直径的（　）倍。",opts:["3","3.14","π","2π"],ans:2,exp:"周长 ÷ 直径 = π，所以是 <b>π 倍</b>。“3.14 倍”只是近似说法，最准确的是 π 倍。"},
+ // c3
+ {id:"c3-1",ch:"c3",lv:"基础",type:"fill",q:"一个圆的半径是 5 cm，它的周长是 ___ cm。",ans:31.4,exp:"C = 2πr = 2 × 3.14 × 5 = <b>31.4 cm</b>。"},
+ {id:"c3-2",ch:"c3",lv:"基础",type:"fill",q:"一个圆的直径是 8 dm，它的周长是 ___ dm。",ans:25.12,exp:"C = πd = 3.14 × 8 = <b>25.12 dm</b>。"},
+ {id:"c3-3",ch:"c3",lv:"提高",type:"fill",q:"如图，直径 10 cm 的半圆，周长是 ___ cm。",fig:"half",efig:"halfAns",ans:25.7,exp:"半圆周长 = 弧 + 直径 = 3.14 × 10 ÷ 2 + 10 = 15.7 + 10 = <b>25.7 cm</b>。最容易漏掉的就是那条直径！"},
+ {id:"c3-4",ch:"c3",lv:"提高",type:"fill",q:"自行车车轮直径 0.5 m，车轮转 100 圈，自行车前进 ___ m。",ans:157,exp:"转 1 圈前进 1 个周长：3.14 × 0.5 = 1.57 m；100 圈：1.57 × 100 = <b>157 m</b>。"},
+ {id:"c3-5",ch:"c3",lv:"基础",type:"fill",q:"一个圆的周长是 18.84 cm，它的半径是 ___ cm。",ans:3,exp:"r = C ÷ 3.14 ÷ 2 = 18.84 ÷ 3.14 ÷ 2 = 6 ÷ 2 = <b>3 cm</b>。"},
+ // c4
+ {id:"c4-1",ch:"c4",lv:"基础",type:"fill",q:"半径 4 cm 的圆，面积是 ___ cm²。",ans:50.24,exp:"S = πr² = 3.14 × 4 × 4 = 3.14 × 16 = <b>50.24 cm²</b>。"},
+ {id:"c4-2",ch:"c4",lv:"基础",type:"fill",q:"直径 10 dm 的圆，面积是 ___ dm²。",ans:78.5,exp:"先求半径：10 ÷ 2 = 5 dm。S = 3.14 × 5 × 5 = <b>78.5 dm²</b>。直接用 10×10 就错啦！"},
+ {id:"c4-3",ch:"c4",lv:"提高",type:"fill",q:"一个圆形花坛周长 12.56 m，它的面积是 ___ m²。",ans:12.56,exp:"先求半径：12.56 ÷ 3.14 ÷ 2 = 2 m。S = 3.14 × 2 × 2 = <b>12.56 m²</b>。（数字一样只是巧合，单位可不一样哦！）"},
+ {id:"c4-4",ch:"c4",lv:"提高",type:"choice",q:"一个圆的半径扩大到原来的 3 倍，面积扩大到原来的（　）倍。",opts:["3","6","9","27"],ans:2,exp:"面积 = π × r × r，两个 r 都扩大 3 倍，面积扩大 3 × 3 = <b>9 倍</b>。"},
+ {id:"c4-5",ch:"c4",lv:"提高",type:"fill",q:"把一个圆剪拼成近似的长方形，长方形的周长比圆的周长多 6 cm。这个圆的面积是 ___ cm²。",ans:28.26,exp:"长方形周长 = 圆周长 + 2 条半径，多出来的 6 cm 就是 2r，所以 r = 3 cm。S = 3.14 × 9 = <b>28.26 cm²</b>。"},
+ // c5
+ {id:"c5-1",ch:"c5",lv:"基础",type:"fill",q:"圆环的外圆半径 5 cm，内圆半径 3 cm，圆环面积是 ___ cm²。",ans:50.24,exp:"S = 3.14 × (5² − 3²) = 3.14 × (25 − 9) = 3.14 × 16 = <b>50.24 cm²</b>。"},
+ {id:"c5-2",ch:"c5",lv:"基础",type:"fill",q:"半径 4 cm、圆心角 90° 的扇形，面积是 ___ cm²。",ans:12.56,exp:"90° 是 360° 的 1/4。3.14 × 4 × 4 ÷ 4 = <b>12.56 cm²</b>。"},
+ {id:"c5-3",ch:"c5",lv:"基础",type:"choice",q:"一个扇形的面积是它所在圆面积的 1/6，它的圆心角是：",opts:["30°","45°","60°","90°"],ans:2,exp:"360° × 1/6 = <b>60°</b>。"},
+ {id:"c5-4",ch:"c5",lv:"提高",type:"judge",q:"判断：半圆的周长就是圆周长的一半。",ans:false,exp:"半圆周长 = 圆周长的一半 <b>+ 一条直径</b>。半圆的面积才是圆面积的一半。"},
+ {id:"c5-5",ch:"c5",lv:"提高",type:"fill",q:"一个圆环，外圆周长 31.4 cm，内圆半径 2 cm，圆环面积是 ___ cm²。",ans:65.94,exp:"外圆半径 R = 31.4 ÷ 3.14 ÷ 2 = 5 cm。S = 3.14 × (25 − 4) = 3.14 × 21 = <b>65.94 cm²</b>。"},
+ // c6
+ {id:"c6-1",ch:"c6",lv:"基础",type:"fill",q:"在边长 10 cm 的正方形里画一个最大的圆，圆的面积是 ___ cm²。",ans:78.5,exp:"圆的直径 = 正方形边长 10 cm，r = 5 cm。S = 3.14 × 25 = <b>78.5 cm²</b>。"},
+ {id:"c6-2",ch:"c6",lv:"拔高",type:"fill",q:"正方形面积是 20 cm²，在里面画一个最大的圆，圆的面积是 ___ cm²。",ans:15.7,exp:"正方形边长 = 2r，面积 = 2r × 2r = 4r² = 20，所以 <b>r² = 5</b>（不用求 r！）。圆面积 = 3.14 × 5 = <b>15.7 cm²</b>。"},
+ {id:"c6-3",ch:"c6",lv:"基础",type:"choice",q:"用同样长的铁丝分别围成长方形、正方形和圆，面积最大的是：",opts:["长方形","正方形","圆","一样大"],ans:2,exp:"周长相同时，<b>圆的面积最大</b>。"},
+ {id:"c6-4",ch:"c6",lv:"提高",type:"fill",q:"在半径 5 cm 的圆里画一个最大的正方形，正方形的面积是 ___ cm²。",ans:50,exp:"正方形的两条对角线都是直径，可以分成 4 个直角边为 5 的三角形：4 × (5 × 5 ÷ 2) = <b>50 cm²</b>，也就是 2r²。"},
+ {id:"c6-5",ch:"c6",lv:"基础",type:"judge",q:"判断：正方形里最大的圆，面积大约占正方形的 78.5%。",ans:true,exp:"圆 3.14r² ÷ 正方形 4r² = 0.785 = <b>78.5%</b>，不管多大都一样。"},
+ // c7
+ {id:"c7-1",ch:"c7",lv:"拔高",type:"fill",q:"如图，正方形边长 10 cm，求树叶形（阴影）的面积 ___ cm²。",fig:"leaf",efig:"leafAns",ans:57,exp:"半片叶子 = 1/4 圆 − 三角形 = 3.14 × 100 ÷ 4 − 10 × 10 ÷ 2 = 78.5 − 50 = 28.5；整片叶子 = 28.5 × 2 = <b>57 cm²</b>。（记住：树叶 = 0.57a²）"},
+ {id:"c7-2",ch:"c7",lv:"拔高",type:"fill",q:"如图，两个边长 4 cm 的正方形，阴影部分面积是 ___ cm²。",fig:"shift",ans:16,exp:"把左边的阴影向右<b>平移</b> 4 cm，正好补进右边正方形的空白处，拼成一整个正方形：4 × 4 = <b>16 cm²</b>。不用算 π！"},
+ {id:"c7-3",ch:"c7",lv:"拔高",type:"fill",q:"一枚硬币贴着另一枚同样大的、固定不动的硬币外侧滚动一周，它自己转了 ___ 圈。",fig:"coin",ans:2,exp:"滚动硬币的<b>圆心</b>走的是半径为 2r 的大圆，路程 = 2π × 2r，是自己周长 2πr 的 <b>2 倍</b>，所以转了 2 圈。看看本章的滚动动画！"},
+ {id:"c7-4",ch:"c7",lv:"提高",type:"fill",q:"钟面上分针长 10 cm，从 12 走到 3，分针扫过的面积是 ___ cm²。",fig:"clock",ans:78.5,exp:"从 12 到 3 是 1/4 圈。3.14 × 10 × 10 ÷ 4 = <b>78.5 cm²</b>。"},
+ {id:"c7-5",ch:"c7",lv:"拔高",type:"fill",q:"一只羊拴在边长 3 m 的正方形羊圈的一个角上，绳长 4 m，羊圈外羊能吃到草的面积是 ___ m²。",fig:"sheep",efig:"sheepAns",ans:39.25,exp:"① 大部分是半径 4 m 的 <b>3/4 个圆</b>：3.14 × 16 × 3/4 = 37.68；<br>② 绳子绕过两个墙角，各剩 4 − 3 = 1 m，又多出两个半径 1 m 的 <b>1/4 圆</b>：3.14 × 1 ÷ 4 × 2 = 1.57；<br>合计 37.68 + 1.57 = <b>39.25 m²</b>。"},
+ // quiz
+ {id:"q01",ch:"quiz",lv:"基础",type:"judge",q:"判断：所有的直径都相等。",ans:false,exp:"只有<b>同一个圆或等圆</b>里的直径才相等。"},
+ {id:"q02",ch:"quiz",lv:"基础",type:"choice",q:"圆的位置由（　）决定，大小由（　）决定。",opts:["半径；圆心","圆心；半径","直径；半径","圆心；圆周率"],ans:1,exp:"<b>圆心定位置，半径定大小。</b>"},
+ {id:"q03",ch:"quiz",lv:"基础",type:"fill",q:"半径 6 cm 的圆，周长是 ___ cm。",ans:37.68,exp:"2 × 3.14 × 6 = <b>37.68 cm</b>。"},
+ {id:"q04",ch:"quiz",lv:"基础",type:"fill",q:"直径 6 cm 的圆，面积是 ___ cm²。",ans:28.26,exp:"r = 3 cm，3.14 × 9 = <b>28.26 cm²</b>。"},
+ {id:"q05",ch:"quiz",lv:"基础",type:"judge",q:"判断：半径 2 cm 的圆，周长和面积相等。",ans:false,exp:"数字都是 12.56，但周长单位是 cm、面积单位是 cm²，<b>周长和面积根本不能比</b>。"},
+ {id:"q06",ch:"quiz",lv:"基础",type:"choice",q:"用一根 31.4 cm 长的铁丝正好围成一个圆，这个圆的直径是：",opts:["5 cm","10 cm","15.7 cm","20 cm"],ans:1,exp:"d = C ÷ 3.14 = 31.4 ÷ 3.14 = <b>10 cm</b>。"},
+ {id:"q07",ch:"quiz",lv:"提高",type:"fill",q:"半径 4 cm 的半圆，周长是 ___ cm。",ans:20.56,exp:"弧 = 3.14 × 4 = 12.56，加直径 8：12.56 + 8 = <b>20.56 cm</b>。",efig:"halfAns"},
+ {id:"q08",ch:"quiz",lv:"提高",type:"fill",q:"半径 4 cm 的半圆，面积是 ___ cm²。",ans:25.12,exp:"3.14 × 16 ÷ 2 = <b>25.12 cm²</b>。"},
+ {id:"q09",ch:"quiz",lv:"提高",type:"choice",q:"两个圆的半径比是 2 : 3，它们的面积比是：",opts:["2 : 3","4 : 6","4 : 9","8 : 27"],ans:2,exp:"面积比 = 半径比的平方：(2×2) : (3×3) = <b>4 : 9</b>。"},
+ {id:"q10",ch:"quiz",lv:"提高",type:"fill",q:"一个圆环，外圆直径 20 cm，内圆直径 12 cm，面积是 ___ cm²。",ans:200.96,exp:"R = 10，r = 6。3.14 × (100 − 36) = 3.14 × 64 = <b>200.96 cm²</b>。"},
+ {id:"q11",ch:"quiz",lv:"提高",type:"fill",q:"半径 6 cm、圆心角 120° 的扇形，面积是 ___ cm²。",ans:37.68,exp:"120° 占 1/3。3.14 × 36 ÷ 3 = <b>37.68 cm²</b>。"},
+ {id:"q12",ch:"quiz",lv:"提高",type:"fill",q:"钟面时针长 5 cm，一昼夜（24 小时）时针尖端走过 ___ cm。",ans:62.8,exp:"时针 12 小时走 1 圈，24 小时走 <b>2 圈</b>：2 × 3.14 × 5 × 2 = <b>62.8 cm</b>。"},
+ {id:"q13",ch:"quiz",lv:"拔高",type:"fill",q:"在一个圆里画一个最大的正方形，正方形面积是 18 cm²，圆的面积是 ___ cm²。",ans:28.26,exp:"圆内最大正方形面积 = 2r² = 18，所以 r² = 9。圆面积 = 3.14 × 9 = <b>28.26 cm²</b>。"},
+ {id:"q14",ch:"quiz",lv:"拔高",type:"fill",q:"如图，跑道两条直道各长 100 m，两端是半圆，内圈直径 60 m。沿内圈跑一圈是 ___ m。",fig:"track",ans:388.4,exp:"两个半圆合起来是一个整圆：3.14 × 60 = 188.4 m；再加两条直道 200 m：<b>388.4 m</b>。"},
+ {id:"q15",ch:"quiz",lv:"拔高",type:"fill",q:"跑道每条道宽 1.25 m。跑一整圈的比赛，第 2 道的起跑线要比第 1 道往前移 ___ m。",ans:7.85,exp:"直道一样长，只有弯道不同。弯道合起来是一个圆，第 2 道比第 1 道直径多 2 × 1.25 = 2.5 m，周长多 3.14 × 2.5 = <b>7.85 m</b>。"},
+ {id:"q16",ch:"quiz",lv:"拔高",type:"fill",q:"如图，大半圆半径 6 cm，两个阴影“月牙”的面积和是 ___ cm²。",fig:"lune",ans:36,exp:"两个小半圆面积和 = 大半圆面积。去掉共同的两块弓形后，<b>两个月牙 = 中间的三角形</b>。三角形底 12、高 6：12 × 6 ÷ 2 = <b>36 cm²</b>。去拔高章节看看动画演示！"},
+ {id:"q17",ch:"quiz",lv:"拔高",type:"fill",q:"半径 10 cm 的圆里画一个最大的正方形，圆内正方形外的部分面积是 ___ cm²。",ans:114,exp:"圆 3.14 × 100 = 314，正方形 2r² = 200，相差 <b>114 cm²</b>（也就是 1.14r²）。"},
+ {id:"q18",ch:"quiz",lv:"拔高",type:"choice",q:"一个圆的周长增加了 6.28 cm，它的半径增加了：",opts:["1 cm","2 cm","3.14 cm","6.28 cm"],ans:0,exp:"周长 = 2 × 3.14 × r，周长增加 6.28 就是 2 × 3.14 × (增加的半径)，所以半径增加 6.28 ÷ 6.28 = <b>1 cm</b>。"},
+ {id:"q19",ch:"quiz",lv:"拔高",type:"fill",q:"一个圆的半径扩大到原来的 2 倍后，面积增加了 37.68 cm²。原来的圆面积是 ___ cm²。",ans:12.56,exp:"半径 ×2，面积变成原来的 4 倍，增加了 <b>3 份</b>原面积。37.68 ÷ 3 = <b>12.56 cm²</b>。"},
+ {id:"q20",ch:"quiz",lv:"拔高",type:"fill",q:"（保留 π）半径 3 cm、圆心角 240° 的扇形面积是 ___ π cm²。（填 π 前面的数）",ans:6,exp:"240° 占 2/3。π × 3² × 2/3 = <b>6π cm²</b>。保留 π 的意思就是最后不乘 3.14。"}
+];
+const QM = {}; Q.forEach(q=>QM[q.id]=q);
+
+/* ---------- question rendering ---------- */
+function parseNum(s){
+  s=String(s).trim().replace(/[，,]/g,".").replace(/[π\s]/g,"");
+  if(/^-?\d+(\.\d+)?\/\d+(\.\d+)?$/.test(s)){ const [a,b]=s.split("/").map(Number); return b? a/b : NaN; }
+  return s===""?NaN:Number(s);
+}
+function readAnswer(q, box){
+  if(q.type==="fill") return parseNum(box.querySelector("input").value);
+  const c=box.querySelector("input:checked"); if(!c) return null;
+  return q.type==="judge" ? c.value==="t" : Number(c.value);
+}
+function isRight(q, a){
+  if(a===null || (typeof a==="number" && isNaN(a))) return false;
+  if(q.type==="fill") return Math.abs(a-q.ans) < 0.006;
+  return a===q.ans;
+}
+function ansText(q){
+  if(q.type==="judge") return q.ans?"✔ 对":"✘ 错";
+  if(q.type==="choice") return q.opts[q.ans];
+  return String(q.ans);
+}
+let uid=0;
+function qCard(q, num, opts){
+  opts=opts||{};
+  const box=document.createElement("div"); box.className="q"; box.dataset.id=q.id;
+  const name="q"+(uid++);
+  let inner=`<div class="qh"><b>第 ${num} 题</b><span class="lv lv-${q.lv}">${q.lv}</span>${S.done[q.id]?'<span title="答对过">⭐</span>':''}</div><div class="qt">${q.q}</div>`;
+  if(q.fig) inner+=`<div class="qfig">${FIG[q.fig]}</div>`;
+  if(q.type==="choice") inner+=`<div class="opts">${q.opts.map((o,i)=>`<label><input type="radio" name="${name}" value="${i}">${String.fromCharCode(65+i)}. ${o}</label>`).join("")}</div>`;
+  else if(q.type==="judge") inner+=`<div class="opts"><label><input type="radio" name="${name}" value="t">✔ 对</label><label><input type="radio" name="${name}" value="f">✘ 错</label></div>`;
+  else inner+=`<div class="fill">答：<input inputmode="decimal" autocomplete="off" placeholder="填数字">${opts.check!==false?'':''}</div>`;
+  if(opts.check!==false) inner+=`<button class="btn sm chk">检查答案</button>`;
+  inner+=`<div class="fb"></div>`;
+  box.innerHTML=inner;
+  if(opts.check!==false){
+    const btn=box.querySelector(".chk");
+    btn.onclick=()=>{ const a=readAnswer(q,box); if(a===null||(typeof a==="number"&&isNaN(a))){ showFb(box,q,null); return; } grade(q,box,a,opts); };
+    const inp=box.querySelector(".fill input"); if(inp) inp.addEventListener("keydown",e=>{ if(e.key==="Enter") btn.click(); });
+  }
+  return box;
+}
+function showFb(box,q,ok){
+  const fb=box.querySelector(".fb");
+  fb.className="fb show "+(ok?"ok":"no");
+  if(ok===null){ fb.innerHTML=`<div class="head">🤔 还没作答哦</div>先选一个答案或填一个数字吧。`; fb.className="fb show no"; return; }
+  fb.innerHTML=`<div class="head">${ok?"✅ 答对啦！":"❌ 再想想～ 正确答案："+ansText(q)}</div><div>${q.exp}</div>${q.efig?`<div class="efig">${FIG[q.efig]}</div>`:""}`;
+}
+function grade(q,box,a,opts){
+  const ok=isRight(q,a);
+  box.classList.remove("right","wrong"); box.classList.add(ok?"right":"wrong");
+  showFb(box,q,ok);
+  if(ok){
+    if(!S.done[q.id]){ S.done[q.id]=true; S.stars++; }
+    if(S.wrong.includes(q.id)){ S.wrong=S.wrong.filter(x=>x!==q.id); }
+    celebrate(box.querySelector(".chk")||box);
+  } else if(!S.wrong.includes(q.id)) S.wrong.push(q.id);
+  save(); refreshHome();
+  if(opts.after) opts.after(ok);
+  return ok;
+}
+function renderPractice(){
+  $$(".qs").forEach(div=>{
+    div.innerHTML="";
+    Q.filter(q=>q.ch===div.dataset.ch).forEach((q,i)=>div.appendChild(qCard(q,i+1)));
+  });
+}
+
+/* ---------- quiz ---------- */
+function renderQuiz(){
+  const box=$("#quizBox"); box.innerHTML="";
+  Q.filter(q=>q.ch==="quiz").forEach((q,i)=>box.appendChild(qCard(q,i+1,{check:false})));
+  $("#quizRes").style.display="none"; $("#quizSubmit").style.display=""; $("#quizAgain").style.display="none";
+  renderQuizHist();
+}
+function renderQuizHist(){
+  const h=$("#quizHist");
+  if(!S.quiz.length){ h.innerHTML=`<h3><span class="tag t-know">成绩记录</span></h3><p style="margin:0;color:var(--sub)">还没有记录，做完第一次测验就会出现在这里。</p>`; return; }
+  const best=Math.max(...S.quiz.map(x=>x.score));
+  h.innerHTML=`<h3><span class="tag t-know">成绩记录</span>最高分 ${best}</h3>`+S.quiz.slice(-8).reverse().map(x=>`<span class="pill">${x.date}　<b>${x.score}</b> 分</span>`).join("");
+}
+$("#quizSubmit").onclick=()=>{
+  const qs=Q.filter(q=>q.ch==="quiz");
+  const cards=$$("#quizBox .q");
+  const blank=cards.filter((c,i)=>{ const a=readAnswer(qs[i],c); return a===null||(typeof a==="number"&&isNaN(a)); }).length;
+  if(blank && !confirm(`还有 ${blank} 题没做，确定交卷吗？`)) return;
+  let right=0; const lv={基础:[0,0],提高:[0,0],拔高:[0,0]};
+  cards.forEach((c,i)=>{
+    const q=qs[i], a=readAnswer(q,c), ok=isRight(q,a);
+    lv[q.lv][1]++; if(ok){ right++; lv[q.lv][0]++; }
+    c.classList.add(ok?"right":"wrong"); showFb(c,q,ok);
+    c.querySelectorAll("input").forEach(x=>x.disabled=true);
+    if(ok){ if(!S.done[q.id]){S.done[q.id]=true;S.stars++;} S.wrong=S.wrong.filter(x=>x!==q.id); }
+    else if(!S.wrong.includes(q.id)) S.wrong.push(q.id);
+  });
+  const score=right*5;
+  const d=new Date(); S.quiz.push({date:`${d.getMonth()+1}月${d.getDate()}日 ${String(d.getHours()).padStart(2,"0")}:${String(d.getMinutes()).padStart(2,"0")}`,score});
+  save(); refreshHome(); renderQuizHist();
+  const msg= score>=90?"太厉害了，你已经是圆的小专家！🏅": score>=75?"很棒！再把错题看一看就完美了 💪": score>=60?"及格啦！去错题本练一练，会更好 🌱":"别灰心！回到前面的章节再看看动画，下次一定更好 🌈";
+  const r=$("#quizRes"); r.style.display="block";
+  r.innerHTML=`<div class="score"><div class="big">${score}</div><div>答对 ${right} / ${qs.length} 题</div><p>${msg}</p>${Object.entries(lv).map(([k,v])=>`<span class="pill"><span class="lv lv-${k}">${k}</span> ${v[0]}/${v[1]}</span>`).join("")}<p style="margin-top:10px">${right<qs.length?'<a href="#wrong">📒 去错题本练错题 →</a>':''}</p></div>`;
+  $("#quizSubmit").style.display="none"; $("#quizAgain").style.display="";
+  r.scrollIntoView({behavior:"smooth",block:"center"});
+  if(score>=60){ celebrate(r); setTimeout(()=>celebrate(r),500); }
+};
+$("#quizAgain").onclick=()=>{ renderQuiz(); scrollTo({top:0,behavior:"smooth"}); };
+
+/* ---------- wrong book ---------- */
+function renderWrong(){
+  const box=$("#wrongBox"); box.innerHTML="";
+  if(!S.wrong.length){ box.innerHTML=`<div class="card" style="text-align:center"><div style="font-size:48px">🎈</div><p>错题本是空的！你太棒了～<br>去 <a href="#quiz">综合测验</a> 挑战一下吧。</p></div>`; return; }
+  const c=document.createElement("div"); c.className="card";
+  c.innerHTML=`<h3><span class="tag t-warn">待消灭</span>${S.wrong.length} 道错题</h3>`;
+  S.wrong.slice().forEach((id,i)=>{ const q=QM[id]; if(!q) return;
+    const card=qCard(q,i+1,{after:ok=>{ if(ok) setTimeout(()=>{ card.style.transition="opacity .5s"; card.style.opacity=".35"; },900); }});
+    c.appendChild(card);
+  });
+  box.appendChild(c);
+}
+$("#wrongReset").onclick=()=>{ if(confirm("确定要清空所有星星、错题和成绩记录吗？")){ S={stars:0,done:{},wrong:[],quiz:[]}; save(); renderAll(); } };
+
+/* ---------- navigation ---------- */
+const PAGES=[
+  ["home","🏠 首页"],["c1","① 认识圆","圆心、半径、直径，用圆规画圆","🔵"],["c2","② 认识 π","周长 ÷ 直径的秘密和历史故事","🥧"],
+  ["c3","③ 周长","滚一滚，推出周长公式","🛞"],["c4","④ 面积","切披萨拼长方形","🍕"],["c5","⑤ 圆环与扇形","甜甜圈和一块披萨","🍩"],
+  ["c6","⑥ 圆与正方形","外方内圆、外圆内方","🔲"],["c7","⑦ 拔高挑战","割补、平移、滚动、跑道","🚀"],["quiz","🏆 综合测验","20 题，看看你的实力","🏆"],["wrong","📒 错题本"]
+];
+$("#nav").innerHTML=PAGES.map(p=>`<a href="#${p[0]}" data-p="${p[0]}">${p[1]}</a>`).join("");
+function refreshHome(){
+  $("#homeGrid").innerHTML=PAGES.filter(p=>p[2]).map(p=>{
+    const qs=Q.filter(q=>q.ch===p[0]); const d=qs.filter(q=>S.done[q.id]).length;
+    return `<a class="chap" href="#${p[0]}"><div class="n">${p[3]}</div><h4>${p[1]}</h4><p>${p[2]}</p><div class="bar"><i style="width:${qs.length?d/qs.length*100:0}%"></i></div><p style="font-size:12px;margin-top:4px">⭐ ${d} / ${qs.length}</p></a>`;
+  }).join("");
+  $("#starN").textContent=S.stars;
+}
+function route(){
+  const id=(location.hash||"#home").slice(1);
+  const page=$("#p-"+id) ? id : "home";
+  $$("section.page").forEach(s=>s.classList.toggle("on",s.id==="p-"+page));
+  $$("#nav a").forEach(a=>{ a.classList.toggle("on",a.dataset.p===page); if(a.dataset.p===page) a.scrollIntoView({inline:"center",block:"nearest"}); });
+  if(page==="wrong") renderWrong();
+  if(page==="quiz") renderQuizHist();
+  scrollTo(0,0);
+}
+addEventListener("hashchange",route);
+
+/* ======================================================
+   DEMO 1 — 认识圆
+   ====================================================== */
+(function(){
+  const svg=$("#d1"), cx=200, cy=150, k=20; let r=3, mode="", stopper=null;
+  function draw(extra){
+    clear(svg);
+    for(let x=0;x<=400;x+=20) el("line",{x1:x,y1:0,x2:x,y2:300,stroke:"#eef6f4"},svg);
+    for(let y=0;y<=300;y+=20) el("line",{x1:0,y1:y,x2:400,y2:y,stroke:"#eef6f4"},svg);
+    const R=r*k;
+    if(mode!=="draw") el("circle",{cx,cy,r:R,fill:"#d6f3ec",stroke:C.teal,"stroke-width":3},svg);
+    if(mode===""){
+      el("line",{x1:cx-R,y1:cy,x2:cx+R,y2:cy,stroke:C.sky,"stroke-width":3},svg);
+      txt(svg,cx-R/2,cy+20,`d = ${fmt(2*r)} cm`,{fill:C.sky,"font-weight":700});
+      const a=-Math.PI/3; el("line",{x1:cx,y1:cy,x2:cx+R*Math.cos(a),y2:cy+R*Math.sin(a),stroke:C.coral,"stroke-width":3},svg);
+      txt(svg,cx+R*0.5*Math.cos(a)+22,cy+R*0.5*Math.sin(a),`r = ${fmt(r)}`,{fill:C.coral,"font-weight":700});
+    }
+    if(extra) extra(R);
+    el("circle",{cx,cy,r:4,fill:C.ink},svg); txt(svg,cx-10,cy-8,"O",{"font-weight":700});
+  }
+  function upd(){
+    r=Number($("#d1r").value); $("#d1rv").textContent=r+" cm";
+    $("#d1a").textContent=fmt(r)+" cm"; $("#d1b").textContent=fmt(2*r)+" cm";
+    $("#d1c").textContent=fmt(2*P*r)+" cm"; $("#d1d").textContent=fmt(P*r*r)+" cm²";
+    if(stopper){stopper();stopper=null;} mode=""; draw();
+  }
+  $("#d1r").oninput=upd;
+  $("#d1draw").onclick=()=>{
+    if(stopper) stopper(); mode="draw";
+    const R=r*k;
+    stopper=anim(2200,t=>{
+      const a=ease(t)*Math.PI*2;
+      draw(()=>{
+        const L=2*Math.PI*R*ease(t);
+        el("circle",{cx,cy,r:R,fill:"none",stroke:C.teal,"stroke-width":3,"stroke-dasharray":`${L} 9999`,transform:`rotate(0 ${cx} ${cy})`},svg);
+        const px=cx+R*Math.cos(a), py=cy+R*Math.sin(a);
+        // compass: two legs meeting at a hinge above
+        const hx=(cx+px)/2, hy=Math.min(cy,py)-60;
+        el("line",{x1:cx,y1:cy,x2:hx,y2:hy,stroke:"#7a8a90","stroke-width":5,"stroke-linecap":"round"},svg);
+        el("line",{x1:px,y1:py,x2:hx,y2:hy,stroke:C.sun,"stroke-width":5,"stroke-linecap":"round"},svg);
+        el("circle",{cx:hx,cy:hy,r:7,fill:C.ink},svg);
+        el("circle",{cx:px,cy:py,r:4,fill:C.coral},svg);
+      });
+    },()=>{ $("#d1tip").innerHTML="针尖固定的地方是<b>圆心</b>，两脚张开的距离就是<b>半径</b>。"; setTimeout(()=>{ if(mode==="draw"){ mode=""; draw(); }},900); });
+  };
+  $("#d1rad").onclick=()=>{
+    if(stopper) stopper(); mode="rad";
+    stopper=anim(1800,t=>{
+      const n=Math.floor(t*24)+1;
+      draw(R=>{ for(let i=0;i<n;i++){ const a=i/24*Math.PI*2; el("line",{x1:cx,y1:cy,x2:cx+R*Math.cos(a),y2:cy+R*Math.sin(a),stroke:i%2?C.coral:C.sun,"stroke-width":2.5},svg);} });
+    });
+    $("#d1tip").innerHTML="同一个圆里，半径可以画<b>无数条</b>，而且<b>长度全都一样</b>！";
+  };
+  $("#d1sym").onclick=()=>{
+    if(stopper) stopper(); mode="sym";
+    const seq=[1,2,4,8,16,32];
+    stopper=anim(3000,t=>{
+      const n=seq[Math.min(seq.length-1,Math.floor(t*seq.length))];
+      draw(R=>{ for(let i=0;i<n;i++){ const a=i/n*Math.PI; el("line",{x1:cx-(R+18)*Math.cos(a),y1:cy-(R+18)*Math.sin(a),x2:cx+(R+18)*Math.cos(a),y2:cy+(R+18)*Math.sin(a),stroke:C.grape,"stroke-width":1.8,"stroke-dasharray":"6 4"},svg);} txt(svg,200,22,`对称轴：${n} 条${n===32?"……数不完！":""}`,{fill:C.grape,"font-weight":700}); });
+    });
+    $("#d1tip").innerHTML="沿着任何一条直径对折，两边都能完全重合。所以圆有<b>无数条</b>对称轴。";
+  };
+  upd();
+})();
+
+/* ======================================================
+   DEMO 2 — π 实验 & 割圆术
+   ====================================================== */
+(function(){
+  const items=[["🪙 硬币",2.5],["🥤 杯口",8],["🍽️ 盘子",20],["🛞 车轮",60],["🎡 摩天轮",3000]];
+  let cur=0, busy=false;
+  $("#d2pick").innerHTML=items.map((it,i)=>`<button data-i="${i}" class="${i?"":"on"}">${it[0]}</button>`).join("");
+  $$("#d2pick button").forEach(b=>b.onclick=()=>{ if(busy) return; cur=+b.dataset.i; $$("#d2pick button").forEach(x=>x.classList.toggle("on",x===b)); base(0); });
+  const svg=$("#d2");
+  const DP=110; // diameter in pixels (fixed so every circle fits)
+  function base(t){
+    clear(svg);
+    const [name,d]=items[cur], r=DP/2, cx=80, cy=95;
+    const unit=d>=100?"m":"cm", dv=d>=100?d/100:d;
+    // circle shrinking into a rope
+    const Lpx=Math.PI*DP;
+    el("circle",{cx,cy,r,fill:"#f3faf8",stroke:"#cfe3de","stroke-width":2},svg);
+    el("circle",{cx,cy,r,fill:"none",stroke:C.coral,"stroke-width":4,"stroke-dasharray":`${Lpx*(1-t)} 9999`,transform:`rotate(90 ${cx} ${cy})`},svg);
+    el("line",{x1:cx-r,y1:cy,x2:cx+r,y2:cy,stroke:C.sky,"stroke-width":3},svg);
+    txt(svg,cx,cy-8,`d = ${fmt(dv)} ${unit}`,{fill:C.sky,"font-size":13,"font-weight":700});
+    txt(svg,cx,cy+r+22,name,{});
+    // rope line
+    const x0=170, y=180;
+    el("line",{x1:x0,y1:y,x2:x0+Lpx*t,y2:y,stroke:C.coral,"stroke-width":5,"stroke-linecap":"round"},svg);
+    // diameters ruler
+    for(let i=0;i<3;i++) el("rect",{x:x0+i*DP,y:y+12,width:DP,height:10,fill:i%2?"#9fc6f2":C.sky,rx:2},svg);
+    el("rect",{x:x0+3*DP,y:y+12,width:(Math.PI-3)*DP,height:10,fill:C.sun,rx:2},svg);
+    for(let i=0;i<3;i++) txt(svg,x0+i*DP+DP/2,y+40,`第${i+1}个直径`,{"font-size":12,fill:C.sub});
+    txt(svg,x0+3*DP+8,y+40,"一点点",{"font-size":12,fill:"#b07800"});
+    if(t>0.99) txt(svg,x0+Lpx/2,y-12,"展开的周长",{fill:C.coral,"font-weight":700});
+  }
+  base(0);
+  $("#d2go").onclick=()=>{
+    if(busy) return; busy=true;
+    anim(1600,t=>base(ease(t)),()=>{
+      busy=false;
+      const [name,d]=items[cur]; const unit=d>=100?"m":"cm", dv=d>=100?d/100:d;
+      const meas=Math.round(Math.PI*dv*(1+(Math.random()-.5)*0.012)*100)/100;
+      const tr=document.createElement("tr");
+      tr.innerHTML=`<td>${name}</td><td>${fmt(dv)} ${unit}</td><td>${meas} ${unit}</td><td><b style="color:var(--teal)">≈ ${(meas/dv).toFixed(2)}</b></td>`;
+      $("#d2tab tbody").appendChild(tr);
+      const n=$("#d2tab tbody").children.length;
+      $("#d2tip").innerHTML= n>=3 ? "发现了吗？不管圆有多大，<b>周长 ÷ 直径</b> 都在 <b>3.14</b> 左右！（测量总会有一点点误差）这个固定的数就叫<b>圆周率 π</b>。" : `已经量了 ${n} 个，再换一个物体量量看！`;
+    });
+  };
+  $("#d2clr").onclick=()=>{ $("#d2tab tbody").innerHTML=""; $("#d2tip").textContent="多量几个圆，看看最后一列有什么秘密？"; };
+
+  // polygon
+  const ns=[6,12,24,48,96,192,384,3072], ps=$("#d2b");
+  function poly(){
+    const n=ns[+$("#d2n").value]; $("#d2nv").textContent=n+(n===96?"（阿基米德）":n===192?"（刘徽）":"");
+    clear(ps); const cx=150,cy=150,R=120;
+    el("circle",{cx,cy,r:R,fill:"#d6f3ec",stroke:C.teal,"stroke-width":2},ps);
+    let d=""; for(let i=0;i<=n;i++){ const a=i/n*Math.PI*2-Math.PI/2; d+=(i?"L":"M")+(cx+R*Math.cos(a)).toFixed(2)+","+(cy+R*Math.sin(a)).toFixed(2); }
+    el("path",{d,fill:"rgba(255,183,43,.35)",stroke:C.coral,"stroke-width":n>100?1:2},ps);
+    $("#d2val").textContent=(n*Math.sin(Math.PI/n)).toFixed(6);
+  }
+  $("#d2n").oninput=poly; poly();
+})();
+
+/* ======================================================
+   DEMO 3 — 滚动 & 半圆
+   ====================================================== */
+(function(){
+  const svg=$("#d3"), r=55, gy=190, x0=60; let busy=false;
+  function draw(t){ // t in [0, 2π]
+    clear(svg);
+    el("line",{x1:10,y1:gy,x2:690,y2:gy,stroke:"#9fb5ba","stroke-width":2},svg);
+    for(let x=x0;x<=690;x+=r*2/4) el("line",{x1:x,y1:gy,x2:x,y2:gy+5,stroke:"#9fb5ba"},svg);
+    const cx=x0+r*t, cy=gy-r;
+    // cycloid trace
+    let d="M"+x0+","+gy; for(let s=0;s<=t;s+=0.05) d+="L"+(x0+r*s-r*Math.sin(s)).toFixed(1)+","+(cy+r*Math.cos(s)).toFixed(1);
+    el("path",{d,fill:"none",stroke:"#f7b2b2","stroke-width":1.5,"stroke-dasharray":"3 3"},svg);
+    el("line",{x1:x0,y1:gy,x2:cx,y2:gy,stroke:C.coral,"stroke-width":6,"stroke-linecap":"round"},svg);
+    el("circle",{cx,cy,r,fill:"#d6f3ec",stroke:C.teal,"stroke-width":3},svg);
+    const g=el("g",{transform:`rotate(${t*180/Math.PI} ${cx} ${cy})`},svg);
+    for(let i=0;i<4;i++){ const a=i*Math.PI/2; el("line",{x1:cx,y1:cy,x2:cx+r*Math.cos(a),y2:cy+r*Math.sin(a),stroke:"#9fd8cb","stroke-width":2},g); }
+    el("circle",{cx,cy:cy+r,r:7,fill:C.coral},g);
+    el("circle",{cx,cy,r:4,fill:C.ink},svg);
+    if(t>=2*Math.PI-1e-6){
+      const y=gy+28, D=2*r;
+      for(let i=0;i<3;i++){ el("rect",{x:x0+i*D,y,width:D,height:12,fill:i%2?"#9fc6f2":C.sky,rx:2},svg); txt(svg,x0+i*D+D/2,y+30,`直径 ${i+1}`,{"font-size":13,fill:C.sky}); }
+      el("rect",{x:x0+3*D,y,width:(Math.PI-3)*D,height:12,fill:C.sun,rx:2},svg);
+      txt(svg,x0+3*D+30,y+30,"多一点点",{"font-size":13,fill:"#b07800"});
+      txt(svg,(x0+cx)/2,gy-8,`周长 = 3.14 × 直径`,{fill:C.coral,"font-weight":700,"font-size":16});
+    }
+  }
+  draw(0);
+  $("#d3go").onclick=()=>{ if(busy) return; busy=true; $("#d3tip").textContent="滚呀滚……";
+    anim(3200,t=>draw(t*2*Math.PI),()=>{ busy=false; $("#d3tip").innerHTML="红线就是展开的周长：<b>3 个直径还多一点点</b>，也就是约 3.14 个直径！"; }); };
+
+  // semicircle parts
+  const h=$("#d3h"); let step=0;
+  function hd(){
+    clear(h);
+    el("path",{d:"M50,160 A100,100 0 0 1 250,160 Z",fill:"#d6f3ec",stroke:step?"#cfe3de":C.teal,"stroke-width":3},h);
+    if(step>=1){ el("path",{d:"M50,160 A100,100 0 0 1 250,160",fill:"none",stroke:C.coral,"stroke-width":6},h); txt(h,150,48,"弧：圆周长的一半 = 3.14×r",{fill:C.coral,"font-weight":700}); }
+    if(step>=2){ el("line",{x1:50,y1:160,x2:250,y2:160,stroke:C.sky,"stroke-width":6},h); txt(h,150,182,"直径 = 2r（别忘了我！）",{fill:C.sky,"font-weight":700}); }
+  }
+  hd();
+  $("#d3hgo").onclick=()=>{
+    step=(step+1)%3; hd();
+    $("#d3htxt").innerHTML=["半圆的周长 = ？ 点按钮看看由哪几部分组成。","第 1 部分：弯弯的<b style='color:#ff6b6b'>弧</b>，是整个圆周长的一半。","第 2 部分：底下那条<b style='color:#3a8ee6'>直径</b>！很多同学会漏掉它。<br>半圆周长 = 3.14r + 2r = <b>5.14r</b>"][step];
+    $("#d3hgo").textContent=step===2?"↩️ 再看一次":"✨ 下一步";
+  };
+})();
+
+/* ======================================================
+   DEMO 4 — 切披萨拼长方形 & 扩大倍数
+   ====================================================== */
+(function(){
+  const svg=$("#d4"), R=80, ccx=130, ccy=150, X0=300; let n=8, state=0, stopper=null, pieces=[];
+  $("#d4n").innerHTML=[4,8,16,32,64].map(v=>`<button data-n="${v}" class="${v===8?"on":""}">${v} 份</button>`).join("");
+  $$("#d4n button").forEach(b=>b.onclick=()=>{ n=+b.dataset.n; $$("#d4n button").forEach(x=>x.classList.toggle("on",x===b)); build(); });
+  function sectorPath(th){ const h=th/2; return `M0,0 L${(R*Math.cos(-h)).toFixed(3)},${(R*Math.sin(-h)).toFixed(3)} A${R},${R} 0 0 1 ${(R*Math.cos(h)).toFixed(3)},${(R*Math.sin(h)).toFixed(3)} Z`; }
+  function build(){
+    if(stopper){stopper();stopper=null;}
+    clear(svg); state=0; pieces=[];
+    const th=2*Math.PI/n, w=2*R*Math.sin(th/2), c=R*Math.cos(th/2), Y0=60;
+    const down=[], up=[];
+    for(let i=0;i<n;i++){
+      const phi=-Math.PI/2+(i+.5)*th; // direction in SVG coords
+      let deg=phi*180/Math.PI; deg=((deg%360)+360)%360;
+      const p={phi:deg, el:null};
+      (deg>0 && deg<180 ? down : up).push(p);
+    }
+    down.sort((a,b)=>b.phi-a.phi); // left→right
+    up.sort((a,b)=>a.phi-b.phi);
+    down.forEach((p,i)=>{ p.tx=X0+w/2+i*w; p.ty=Y0; p.rot=90; p.col=C.sun; });
+    up.forEach((p,i)=>{ p.tx=X0+i*w; p.ty=Y0+c; p.rot=270; p.col=C.teal; });
+    const d=sectorPath(th);
+    el("circle",{cx:ccx,cy:ccy,r:R+1,fill:"none",stroke:"#e3efec","stroke-width":2,"stroke-dasharray":"4 4"},svg);
+    [...down,...up].forEach(p=>{
+      p.el=el("path",{d,fill:p.col,stroke:"#fff","stroke-width":n>32?0.6:1.5,"fill-opacity":.9},svg);
+      p.from={x:ccx,y:ccy,r:p.phi};
+      let target=p.rot, delta=((target-p.phi)%360+540)%360-180; p.to={x:p.tx,y:p.ty,r:p.phi+delta};
+      setT(p,p.from);
+    });
+    pieces=[...down,...up];
+    svg._info={w,c,Y0};
+    $("#d4txt").innerHTML=`圆被平均切成了 <b>${n}</b> 份。一半涂黄色、一半涂绿色。点"拼一拼"！`;
+  }
+  function setT(p,s){ p.el.setAttribute("transform",`translate(${s.x.toFixed(2)},${s.y.toFixed(2)}) rotate(${s.r.toFixed(2)})`); }
+  function labels(){
+    const {w,c,Y0}=svg._info, L=n/2*w;
+    const g=el("g",{class:"lbl"},svg);
+    el("line",{x1:X0,y1:Y0-14,x2:X0+L,y2:Y0-14,stroke:C.coral,"stroke-width":2},g);
+    el("line",{x1:X0,y1:Y0-20,x2:X0,y2:Y0-8,stroke:C.coral,"stroke-width":2},g); el("line",{x1:X0+L,y1:Y0-20,x2:X0+L,y2:Y0-8,stroke:C.coral,"stroke-width":2},g);
+    txt(g,X0+L/2,Y0-22,"长 ≈ 圆周长的一半 = πr",{fill:C.coral,"font-weight":700,"font-size":19});
+    const xr=X0+L+w/2+12;
+    el("line",{x1:xr,y1:Y0,x2:xr,y2:Y0+c,stroke:C.sky,"stroke-width":2},g);
+    txt(g,xr+8,Y0+c/2+5,"宽 ≈ r",{fill:C.sky,"font-weight":700,"text-anchor":"start","font-size":19});
+    txt(g,X0+L/2,Y0+c+R*0.0+70,"S = πr × r = πr²",{fill:"#7a5200","font-weight":800,"font-size":26});
+  }
+  function go(to){
+    if(stopper){stopper();stopper=null;}
+    $$("#d4 .lbl").forEach(x=>x.remove());
+    stopper=anim(1500,t=>{ const e=ease(t); pieces.forEach(p=>{ const a=to?p.from:p.to, b=to?p.to:p.from; setT(p,{x:a.x+(b.x-a.x)*e,y:a.y+(b.y-a.y)*e,r:a.r+(b.r-a.r)*e}); }); },
+      ()=>{ state=to; if(to){ labels(); $("#d4txt").innerHTML= n<=8 ? "拼出来像一个<b>平行四边形</b>，边还是波浪形的。试试切成 32 份或 64 份！" : n>=32 ? `切成 ${n} 份后，几乎就是一个<b>长方形</b>了！<br>长 = 圆周长的一半 = <b>πr</b>，宽 = 半径 <b>r</b>，所以 <b>S = πr × r = πr²</b>。` : "越来越像<b>长方形</b>了！份数越多越像。"; } else $("#d4txt").textContent="还原成圆啦。换个份数再试试？"; });
+  }
+  $("#d4go").onclick=()=>{ if(state===0) go(1); };
+  $("#d4back").onclick=()=>{ if(state===1) go(0); };
+  build();
+
+  // scale demo
+  const k=$("#d4k");
+  function kd(){
+    const m=+$("#d4kr").value; $("#d4kv").textContent=m+" 倍"; $("#d4k1").textContent="× "+m; $("#d4k2").textContent=`× ${m}×${m} = ${m*m}`;
+    clear(k); const u=13;
+    el("circle",{cx:40,cy:200,r:u,fill:C.sunL,stroke:C.sun,"stroke-width":2},k); txt(k,40,228,"原来",{"font-size":12});
+    const R2=u*m, cx=120+R2, cy=200-R2;
+    el("rect",{x:cx-R2,y:cy-R2,width:2*R2,height:2*R2,fill:"none",stroke:"#e3efec"},k);
+    for(let i=0;i<m;i++) for(let j=0;j<m;j++) el("rect",{x:cx-R2+i*2*u,y:cy-R2+j*2*u,width:2*u,height:2*u,fill:"none",stroke:"#bcd8d2","stroke-dasharray":"3 2"},k);
+    el("circle",{cx,cy,r:R2,fill:"rgba(31,163,138,.25)",stroke:C.teal,"stroke-width":2},k);
+    el("rect",{x:40-u,y:200-u,width:2*u,height:2*u,fill:"none",stroke:"#bcd8d2","stroke-dasharray":"3 2"},k);
+    txt(k,cx,Math.max(16,cy-R2-6),`${m}×${m} = ${m*m} 个小方格`,{"font-size":13,fill:C.teal,"font-weight":700});
+  }
+  $("#d4kr").oninput=kd; kd();
+})();
+
+/* ======================================================
+   DEMO 5 — 圆环 & 扇形
+   ====================================================== */
+(function(){
+  const s=$("#d5r"), k=22, cx=150, cy=150;
+  function ring(){
+    let R=+$("#d5R").value, r=+$("#d5rr").value;
+    $("#d5rr").max=R-0.5; if(r>R-0.5){ r=R-0.5; $("#d5rr").value=r; }
+    $("#d5Rv").textContent=R+" cm"; $("#d5rv").textContent=r+" cm";
+    $("#d5ra").innerHTML=`3.14×(${fmt(R*R)}−${fmt(r*r)}) = ${fmt(P*(R*R-r*r))} cm²`;
+    clear(s); const a=R*k,b=r*k;
+    el("path",{d:`M${cx-a},${cy} a${a},${a} 0 1 0 ${2*a},0 a${a},${a} 0 1 0 ${-2*a},0 Z M${cx-b},${cy} a${b},${b} 0 1 0 ${2*b},0 a${b},${b} 0 1 0 ${-2*b},0 Z`,"fill-rule":"evenodd",fill:"#ffd27a",stroke:"#e0a000","stroke-width":2},s);
+    el("line",{x1:cx,y1:cy,x2:cx+a,y2:cy,stroke:C.coral,"stroke-width":3},s); txt(s,cx+a/2+b/2,cy+18,"R",{fill:C.coral,"font-weight":700});
+    el("line",{x1:cx,y1:cy,x2:cx-b*0.71,y2:cy-b*0.71,stroke:C.sky,"stroke-width":3},s); txt(s,cx-b*0.35-10,cy-b*0.35,"r",{fill:C.sky,"font-weight":700});
+    el("circle",{cx,cy,r:3.5,fill:C.ink},s);
+  }
+  $("#d5R").oninput=ring; $("#d5rr").oninput=ring; ring();
+
+  const g=$("#d5s"), R=110, r0=4;
+  $("#d5pre").innerHTML=[[60,"1/6"],[90,"1/4"],[120,"1/3"],[180,"半圆"],[270,"3/4"]].map(([a,l])=>`<button data-a="${a}">${l}</button>`).join("");
+  $$("#d5pre button").forEach(b=>b.onclick=()=>{ $("#d5a").value=b.dataset.a; sec(); });
+  function sec(){
+    const n=+$("#d5a").value; $("#d5av").textContent=n+"°";
+    const q=gcd(n,360); $("#d5f").textContent=`${n}/360 = ${n===360?"1（整个圆）":(n/q)+"/"+(360/q)}`;
+    $("#d5sa").textContent=fmt(P*r0*r0*n/360)+" cm²";
+    $("#d5sl").textContent=fmt(2*P*r0*n/360)+" cm";
+    $("#d5sp").textContent=fmt(2*P*r0*n/360+2*r0)+" cm";
+    $$("#d5pre button").forEach(b=>b.classList.toggle("on",+b.dataset.a===n));
+    clear(g);
+    el("circle",{cx:cx,cy:cy,r:R,fill:"#f3faf8",stroke:"#cfe3de","stroke-width":2,"stroke-dasharray":"5 4"},g);
+    if(n>=360) el("circle",{cx,cy,r:R,fill:"#bfeee2",stroke:C.teal,"stroke-width":3},g);
+    else{
+      const a0=-Math.PI/2, a1=a0+n*Math.PI/180;
+      const x1=cx+R*Math.cos(a0), y1=cy+R*Math.sin(a0), x2=cx+R*Math.cos(a1), y2=cy+R*Math.sin(a1);
+      el("path",{d:`M${cx},${cy} L${x1},${y1} A${R},${R} 0 ${n>180?1:0} 1 ${x2},${y2} Z`,fill:"#bfeee2",stroke:C.teal,"stroke-width":3,"stroke-linejoin":"round"},g);
+      el("path",{d:`M${x1},${y1} A${R},${R} 0 ${n>180?1:0} 1 ${x2},${y2}`,fill:"none",stroke:C.coral,"stroke-width":5},g);
+      const ar=26; el("path",{d:`M${cx+ar*Math.cos(a0)},${cy+ar*Math.sin(a0)} A${ar},${ar} 0 ${n>180?1:0} 1 ${cx+ar*Math.cos(a1)},${cy+ar*Math.sin(a1)}`,fill:"none",stroke:C.grape,"stroke-width":2.5},g);
+      const am=(a0+a1)/2; txt(g,cx+46*Math.cos(am),cy+46*Math.sin(am)+5,n+"°",{fill:C.grape,"font-weight":700});
+    }
+    el("circle",{cx,cy,r:4,fill:C.ink},g);
+    txt(g,150,292,"红色的是弧，绿色边是两条半径",{"font-size":12,fill:C.sub});
+  }
+  $("#d5a").oninput=sec; sec();
+})();
+
+/* ======================================================
+   DEMO 6 — 圆与正方形
+   ====================================================== */
+(function(){
+  let mode=0;
+  $("#d6m").innerHTML=`<button class="on" data-m="0">外方内圆（方中圆）</button><button data-m="1">外圆内方（圆中方）</button>`;
+  $$("#d6m button").forEach(b=>b.onclick=()=>{ mode=+b.dataset.m; $$("#d6m button").forEach(x=>x.classList.toggle("on",x===b)); draw(); });
+  const s=$("#d6"), cx=150, cy=150;
+  function draw(){
+    const r=+$("#d6r").value; $("#d6rv").textContent=r+" cm";
+    clear(s);
+    if(mode===0){
+      const R=110;
+      el("rect",{x:cx-R,y:cy-R,width:2*R,height:2*R,fill:"#ffe39a",stroke:"#e0a000","stroke-width":3},s);
+      el("circle",{cx,cy,r:R,fill:"#bfeee2",stroke:C.teal,"stroke-width":3},s);
+      el("line",{x1:cx,y1:cy,x2:cx+R,y2:cy,stroke:C.coral,"stroke-width":3},s); txt(s,cx+R/2,cy-8,"r",{fill:C.coral,"font-weight":700});
+      txt(s,cx,cy+R+22,"边长 = 2r",{fill:"#b07800","font-weight":700});
+      $("#d6sq").textContent=`4r² = ${fmt(4*r*r)}`; $("#d6ci").textContent=`3.14r² = ${fmt(P*r*r)}`;
+      $("#d6gap").textContent=`0.86r² = ${fmt(0.86*r*r)}`; $("#d6ratio").textContent="圆 ÷ 方 = 78.5%";
+      $("#d6tip").innerHTML="正方形边长 = 圆的<b>直径</b>。正方形 = 2r × 2r = <b>4r²</b>，四个角的空白合起来是 4r² − 3.14r² = <b>0.86r²</b>。";
+    } else {
+      const R=120;
+      el("circle",{cx,cy,r:R,fill:"#bfeee2",stroke:C.teal,"stroke-width":3},s);
+      const pts=[[cx,cy-R],[cx+R,cy],[cx,cy+R],[cx-R,cy]];
+      pts.forEach((p,i)=>{ const q=pts[(i+1)%4]; el("path",{d:`M${cx},${cy} L${p[0]},${p[1]} L${q[0]},${q[1]} Z`,fill:i%2?"#ffe39a":"#ffd27a",stroke:"#e0a000","stroke-width":2},s); });
+      el("line",{x1:cx,y1:cy,x2:cx+R,y2:cy,stroke:C.coral,"stroke-width":3},s); txt(s,cx+R/2,cy-8,"r",{fill:C.coral,"font-weight":700});
+      el("line",{x1:cx,y1:cy,x2:cx,y2:cy-R,stroke:C.coral,"stroke-width":3},s); txt(s,cx+10,cy-R/2,"r",{fill:C.coral,"font-weight":700});
+      $("#d6sq").textContent=`2r² = ${fmt(2*r*r)}`; $("#d6ci").textContent=`3.14r² = ${fmt(P*r*r)}`;
+      $("#d6gap").textContent=`1.14r² = ${fmt(1.14*r*r)}`; $("#d6ratio").textContent="圆 ÷ 方 = 1.57";
+      $("#d6tip").innerHTML="正方形的对角线就是直径，把它切成 <b>4 个小三角形</b>，每个面积是 r × r ÷ 2，所以正方形 = 4 × r²÷2 = <b>2r²</b>。";
+    }
+  }
+  $("#d6r").oninput=draw; draw();
+
+  // champion compare
+  let cm=0;
+  $("#d6cm").innerHTML=`<button class="on" data-m="0">周长相同，比面积</button><button data-m="1">面积相同，比周长</button>`;
+  $$("#d6cm button").forEach(b=>b.onclick=()=>{ cm=+b.dataset.m; $$("#d6cm button").forEach(x=>x.classList.toggle("on",x===b)); if(cm){ $("#d6L").min=16; $("#d6L").max=100; $("#d6L").step=4; $("#d6L").value=36; } else { $("#d6L").min=12; $("#d6L").max=60; $("#d6L").step=4; $("#d6L").value=24; } comp(); });
+  const g=$("#d6c");
+  function comp(){
+    const L=+$("#d6L").value; clear(g);
+    let rows;
+    if(cm===0){
+      $("#d6Llab").textContent="周长都是："; $("#d6Lv").textContent=L+" cm";
+      rows=[["长方形(长是宽2倍)",(L/3)*(L/6),C.grape],["正方形",(L/4)*(L/4),C.sun],["圆",L*L/(4*P),C.teal]];
+      $("#d6ctip").innerHTML="周长相同时，<b>圆的面积最大</b>，正方形第二，长方形最小。";
+    } else {
+      $("#d6Llab").textContent="面积都是："; $("#d6Lv").textContent=L+" cm²";
+      rows=[["长方形(长是宽2倍)",6*Math.sqrt(L/2),C.grape],["正方形",4*Math.sqrt(L),C.sun],["圆",2*Math.sqrt(P*L),C.teal]];
+      $("#d6ctip").innerHTML="面积相同时，<b>圆的周长最短</b>——最省材料！所以水管、易拉罐都做成圆的。";
+    }
+    const mx=Math.max(...rows.map(r=>r[1]));
+    rows.forEach((r,i)=>{
+      const y=20+i*58, w=Math.max(4,r[1]/mx*330);
+      txt(g,130,y+26,r[0],{"text-anchor":"end","font-size":14});
+      el("rect",{x:140,y,width:w,height:36,rx:8,fill:r[2],opacity:.85},g);
+      txt(g,148+w,y+24,(cm?"周长 ≈ ":"面积 ≈ ")+(Math.round(r[1]*100)/100)+(cm?" cm":" cm²"),{"text-anchor":"start","font-size":14,"font-weight":700});
+    });
+  }
+  $("#d6L").oninput=comp; comp();
+})();
+
+/* ======================================================
+   DEMO 7 — 拔高：平移 / 树叶 / 月牙 / 滚动
+   ====================================================== */
+function stepper(svgSel,txtSel,goSel,reSel,steps){
+  let i=0; const svg=$(svgSel);
+  function show(){ clear(svg); steps[i].draw(svg); $(txtSel).innerHTML=steps[i].t; $(goSel).disabled=i===steps.length-1; }
+  $(goSel).onclick=()=>{ if(i<steps.length-1){ i++; show(); if(steps[i].anim) steps[i].anim(svg); } };
+  $(reSel).onclick=()=>{ i=0; show(); };
+  show();
+}
+(function(){
+  // 平移
+  const base=(s,shiftX)=>{
+    el("rect",{x:40,y:40,width:120,height:120,fill:"#fff",stroke:C.ink,"stroke-width":2},s);
+    el("rect",{x:160,y:40,width:120,height:120,fill:"#fff",stroke:C.ink,"stroke-width":2},s);
+    el("path",{d:"M160,160 L160,40 A120,120 0 0 1 280,160Z",fill:C.sun,opacity:.85},s);
+    const g=el("g",{transform:`translate(${shiftX||0},0)`},s);
+    el("path",{d:"M40,40 L160,40 L160,160 A120,120 0 0 0 40,40Z",fill:"#ff9f43",opacity:.9},g);
+    el("path",{d:"M40,40 A120,120 0 0 1 160,160 M160,40 A120,120 0 0 1 280,160",fill:"none",stroke:C.ink,"stroke-width":2},s);
+    txt(s,100,185,"4 cm",{fill:C.sub}); txt(s,220,185,"4 cm",{fill:C.sub});
+    return g;
+  };
+  stepper("#d7a","#d7atxt","#d7ago","#d7are",[
+    {t:"两个边长 4 cm 的正方形，阴影（橙色+黄色）面积是多少？<br>看起来要算 1/4 圆……先别急！",draw:s=>base(s,0)},
+    {t:"把左边<b style='color:#e67e22'>橙色</b>那块向右<b>平移</b> 4 cm……",draw:s=>base(s,0),anim:s=>{ anim(1400,t=>{ clear(s); base(s,120*ease(t)); }); }},
+    {t:"正好补满右边的正方形！🎉<br>阴影面积 = 一个正方形 = 4 × 4 = <b>16 cm²</b>。<br>这就是<b>平移法</b>：把分散的阴影拼成规则图形。",draw:s=>{ base(s,120); txt(s,220,28,"拼成一个整正方形！",{fill:"#b07800","font-weight":700}); }}
+  ]);
+
+  // 树叶
+  const sq=s=>el("rect",{x:50,y:50,width:200,height:200,fill:"#fff",stroke:C.ink,"stroke-width":2},s);
+  const q1="M50,250 L50,50 A200,200 0 0 1 250,250Z", q2="M250,50 L250,250 A200,200 0 0 1 50,50Z", leaf="M50,50 A200,200 0 0 1 250,250 A200,200 0 0 1 50,50Z";
+  stepper("#d7b","#d7btxt","#d7bgo","#d7bre",[
+    {t:"正方形边长 a = 10 cm，里面两条弧围成一片<b>树叶</b>。树叶面积是多少？",draw:s=>{ sq(s); el("path",{d:leaf,fill:C.sunL,stroke:"#e0a000","stroke-width":2},s); txt(s,150,275,"a = 10 cm",{fill:C.sub}); }},
+    {t:"先看<b style='color:#1fa38a'>绿色</b>：以左下角为圆心的 <b>1/4 圆</b>，面积 = 3.14 × 10² ÷ 4 = 78.5。",draw:s=>{ sq(s); el("path",{d:q1,fill:C.teal,opacity:.45,stroke:C.teal,"stroke-width":2},s); }},
+    {t:"再看<b style='color:#e0a000'>黄色</b>：以右上角为圆心的另一个 <b>1/4 圆</b>，也是 78.5。<br>两块<b>重叠</b>的部分正好是树叶！",draw:s=>{ sq(s); el("path",{d:q1,fill:C.teal,opacity:.4},s); el("path",{d:q2,fill:C.sun,opacity:.45},s); el("path",{d:leaf,fill:"none",stroke:C.coral,"stroke-width":3},s); }},
+    {t:"两个 1/4 圆加起来铺满了正方形，<b>还多出了一片树叶</b>（树叶被算了两次）。<br>树叶 = 78.5 × 2 − 10 × 10 = 157 − 100 = <b>57 cm²</b>",draw:s=>{ sq(s); el("path",{d:q1,fill:C.teal,opacity:.25},s); el("path",{d:q2,fill:C.sun,opacity:.25},s); el("path",{d:leaf,fill:C.coral,opacity:.75},s); txt(s,150,155,"57",{fill:"#fff","font-size":26,"font-weight":800}); }},
+    {t:"另一种想法：沿对角线切开，<b>半片叶子 = 1/4 圆 − 三角形</b> = 78.5 − 50 = 28.5，整片 = 28.5 × 2 = <b>57 cm²</b>。<br>📌 小结论：树叶面积 = <b>0.57a²</b>",draw:s=>{ sq(s); el("path",{d:q1,fill:C.teal,opacity:.3},s); el("path",{d:"M50,50 L250,250 L50,250Z",fill:"#fff",stroke:C.sub,"stroke-dasharray":"5 4"},s); el("path",{d:"M50,50 A200,200 0 0 1 250,250Z",fill:C.coral,opacity:.75},s); el("line",{x1:50,y1:50,x2:250,y2:250,stroke:C.ink,"stroke-width":2},s); txt(s,105,205,"三角形 50",{"font-size":13}); txt(s,180,110,"半片叶",{"font-size":13,fill:"#c73f3c","font-weight":700}); }}
+  ]);
+
+  // 月牙 (Hippocrates)
+  const A="50,220", B="350,220", Cc="200,70", rs=106.07;
+  const bigS=`M50,220 A150,150 0 0 1 350,220 Z`, tri=`M50,220 L200,70 L350,220 Z`;
+  const smallL=`M50,220 A${rs},${rs} 0 0 1 200,70 Z`, smallR=`M200,70 A${rs},${rs} 0 0 1 350,220 Z`;
+  const segL=`M50,220 A150,150 0 0 1 200,70 Z`, segR=`M200,70 A150,150 0 0 1 350,220 Z`;
+  const luneL=`M50,220 A${rs},${rs} 0 0 1 200,70 A150,150 0 0 0 50,220Z`, luneR=`M200,70 A${rs},${rs} 0 0 1 350,220 A150,150 0 0 0 200,70Z`;
+  const frame=s=>{ el("path",{d:bigS,fill:"none",stroke:C.ink,"stroke-width":2},s); el("path",{d:`M50,220 L200,70 L350,220`,fill:"none",stroke:C.ink,"stroke-width":2},s); el("circle",{cx:200,cy:220,r:3,fill:C.ink},s); txt(s,200,240,"O",{"font-size":13}); };
+  stepper("#d7c","#d7ctxt","#d7cgo","#d7cre",[
+    {t:"大半圆半径 R = 6 cm。在三角形的两条斜边上，向外各画一个小半圆，形成两个<b>月牙</b>。月牙面积和是多少？",draw:s=>{ frame(s); el("path",{d:luneL,fill:C.sun},s); el("path",{d:luneR,fill:C.sun},s); el("path",{d:smallL,fill:"none",stroke:C.ink,"stroke-width":1.5},s); el("path",{d:smallR,fill:"none",stroke:C.ink,"stroke-width":1.5},s); }},
+    {t:"第 1 步：两个<b style='color:#3a8ee6'>小半圆</b>的面积和 = <b style='color:#1fa38a'>大半圆</b>的面积！<br>（为什么？以斜边为边的正方形面积是 2R²，小半圆半径的平方 = R²÷2，所以两个小半圆 = π×R²÷2 = 大半圆。）",draw:s=>{ el("path",{d:bigS,fill:C.teal,opacity:.3,stroke:C.teal,"stroke-width":2},s); el("path",{d:smallL,fill:C.sky,opacity:.3,stroke:C.sky,"stroke-width":2},s); el("path",{d:smallR,fill:C.sky,opacity:.3,stroke:C.sky,"stroke-width":2},s); }},
+    {t:"第 2 步：两边都有灰色的两块<b>弓形</b>（斜边和大圆弧之间）。<br>小半圆 = 月牙 + 弓形；大半圆 = 三角形 + 弓形。",draw:s=>{ frame(s); el("path",{d:segL,fill:"#bbb"},s); el("path",{d:segR,fill:"#bbb"},s); el("path",{d:luneL,fill:C.sun,opacity:.6},s); el("path",{d:luneR,fill:C.sun,opacity:.6},s); el("path",{d:tri,fill:C.teal,opacity:.35},s); }},
+    {t:"第 3 步：两边同时减去灰色弓形——<br><b>两个月牙 = 三角形</b>！<br>三角形 = 12 × 6 ÷ 2 = <b>36 cm²</b>（就是 R²）🎉 一点 π 都不用算！",draw:s=>{ frame(s); el("path",{d:luneL,fill:C.sun},s); el("path",{d:luneR,fill:C.sun},s); el("path",{d:tri,fill:C.sun,opacity:.85},s); txt(s,200,175,"月牙和 = 三角形",{"font-weight":800}); }}
+  ]);
+
+  // 滚动
+  let ratio=1, busy=false;
+  $("#d7dk").innerHTML=[1,2,3].map(v=>`<button data-k="${v}" class="${v===1?"on":""}">${v===1?"一样大的硬币":"不动的圆是它的 "+v+" 倍大"}</button>`).join("");
+  $$("#d7dk button").forEach(b=>b.onclick=()=>{ if(busy) return; ratio=+b.dataset.k; $$("#d7dk button").forEach(x=>x.classList.toggle("on",x===b)); roll(0); $("#d7dturn").textContent="0 圈"; });
+  const s=$("#d7d");
+  function roll(t){ // t: 0..1 fraction around
+    clear(s);
+    const r=ratio===1?42:ratio===2?34:26, R=r*ratio, cx=160, cy=160, al=-Math.PI/2+t*2*Math.PI;
+    el("circle",{cx,cy,r:R,fill:C.sunL,stroke:"#e0a000","stroke-width":3},s);
+    el("circle",{cx,cy,r:R+r,fill:"none",stroke:"#cfe3de","stroke-dasharray":"4 4"},s);
+    // trace of centre
+    if(t>0){ const a0=-Math.PI/2; const x1=cx+(R+r)*Math.cos(a0), y1=cy+(R+r)*Math.sin(a0), x2=cx+(R+r)*Math.cos(al), y2=cy+(R+r)*Math.sin(al);
+      el("path",{d:t>=1?`M${cx},${cy-(R+r)} a${R+r},${R+r} 0 1 1 0,${2*(R+r)} a${R+r},${R+r} 0 1 1 0,${-2*(R+r)}`:`M${x1},${y1} A${R+r},${R+r} 0 ${t>.5?1:0} 1 ${x2},${y2}`,fill:"none",stroke:C.coral,"stroke-width":2},s); }
+    const px=cx+(R+r)*Math.cos(al), py=cy+(R+r)*Math.sin(al);
+    const spin=t*2*Math.PI*(R+r)/r; // self rotation
+    const g=el("g",{transform:`translate(${px},${py}) rotate(${spin*180/Math.PI})`},s);
+    el("circle",{cx:0,cy:0,r,fill:C.tealL,stroke:C.teal,"stroke-width":3},g);
+    el("path",{d:`M0,${r*0.7} L0,${-r*0.7} M${-r*0.3},${-r*0.35} L0,${-r*0.7} L${r*0.3},${-r*0.35}`,fill:"none",stroke:C.coral,"stroke-width":3.5,"stroke-linecap":"round","stroke-linejoin":"round"},g);
+    return spin/(2*Math.PI);
+  }
+  roll(0);
+  $("#d7dgo").onclick=()=>{ if(busy) return; busy=true;
+    anim(4200,t=>{ const turns=roll(t); $("#d7dturn").textContent=turns.toFixed(1)+" 圈"; },()=>{ busy=false; const n=ratio+1;
+      $("#d7dturn").textContent=n+" 圈";
+      $("#d7dtip").innerHTML=`看红色箭头！它转了 <b>${n} 圈</b>。<br>原因：要看<b>圆心</b>走的路（红线），它是半径为 (R + r) 的大圆。圈数 = (R + r) ÷ r = ${ratio}+1 = <b>${n}</b>。`; }); };
+})();
+
+/* ---------- init ---------- */
+function renderAll(){ renderPractice(); renderQuiz(); refreshHome(); route(); }
+renderAll(); save();
+</script>
+</body>
+</html>
